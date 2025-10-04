@@ -13,7 +13,7 @@ public class Card {
 
    @ManyToOne
    @JoinColumn(name = "user_id", nullable = false)
-   private int user_id;
+   private User user;
 
    private String cardName;
    private LocalDate dateOpened;
