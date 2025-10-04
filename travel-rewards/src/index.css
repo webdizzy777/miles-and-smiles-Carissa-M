@@ -1,0 +1,241 @@
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-image: url("./assets/Tropical-Beach.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  box-sizing: border-box;
+}
+
+/*flex the children of root to be able to stack vertically and force to never be shorter than the viewport*/
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+header {
+  width: 100%;
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-left: 20px;
+}
+
+header img {
+  max-width: 150px;
+  height: auto;
+}
+
+footer {
+  width: 100%;
+  background-color: aliceblue;
+  box-sizing: border-box;
+  padding: 30px 50px 30px 50px;
+}
+
+/*Take up all remaining space after the header and footer take theirs, keep content from going to wide, make padding relevant to root font size for scalability, center the block elements with auto left and right margins*/
+main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/*Heading will scale based on its parent element and have the ability to sit inline with an image*/
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  display: inline-block;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  font-size: 1.5em;
+}
+
+a {
+  font-weight: bold;
+  color: rgb(233, 134, 14);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #535bf2;
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  border: 2px solid aliceblue;
+  background-color: rgba(240, 248, 255, 0.5);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: rgb(233, 134, 14);
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin: 10px;
+}
+
+button:hover {
+  border-color: aliceblue;
+}
+
+.benefit-li {
+  padding-bottom: 10px;
+}
+
+th,
+td {
+  border: 1px solid;
+  padding: 8px;
+  border-color: #a8afb3;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  background-color: #f1f3ff;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.loginForm {
+  color: aliceblue;
+  text-align: left;
+  font-size: 16px;
+}
+
+.logInButton {
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  background-color: rgb(233, 134, 14);
+  cursor: pointer;
+  margin: 10px;
+  width: 100%;
+}
+
+.blackOpaque {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  font-size: 1.1em;
+}
+
+.left {
+  text-align: left;
+}
+
+.card {
+  padding: 2em;
+  background-color: aliceblue;
+  border-radius: 8px;
+  margin: 5%;
+  box-sizing: border-box;
+}
+
+/*Children become flex items and allow them to flex to the next line, allow a gap between the items of 2x the font size of the parent (container)*/
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+/*grow and shrink as needed and fill 45% to allow for gap, use border box to include padding and border in the computations*/
+.sideBySideCard {
+  flex: 1 1 45%;
+  min-width: 250px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 2em;
+  background-color: aliceblue;
+}
+
+.sideBySideFooter {
+  flex: 1 1 45%;
+  min-width: 250px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 2em;
+  background-color: aliceblue;
+}
+
+.addCardInput {
+  border: 2px solid #000000;
+}
+
+.used {
+  cursor: pointer;
+}
+
+.used:hover {
+  color: #34ba89;
+}
+
+.center {
+  text-align: center;
+}
+
+.purple {
+  color: #4b0082;
+}
+
+.green {
+  color: #34ba89;
+}
+
+.red {
+  color: rgb(218, 67, 98);
+  font-weight: bold;
+}
+
+/*On screens that are smaller than 576 px make my side by  side cards stack vertically by making them take up the full width of the container by starting at 100% width and allowed to grow to fill and shrink to avoid overflow*/
+@media (max-width: 768px) {
+  .sideBySideCard,
+  .sideBySideFooter {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  th,
+  td {
+    padding: 4px;
+    font-size: 0.8rem;
+  }
+}
