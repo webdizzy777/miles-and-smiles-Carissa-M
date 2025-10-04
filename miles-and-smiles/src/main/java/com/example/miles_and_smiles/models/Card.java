@@ -1,9 +1,6 @@
 package com.example.miles_and_smiles.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +11,8 @@ public class Card {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int card_id;
 
+   @ManyToOne
+   @JoinColumn(name = "user_id", nullable = false)
    private int user_id;
 
    private String cardName;
