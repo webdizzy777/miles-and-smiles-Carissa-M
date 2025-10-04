@@ -15,7 +15,9 @@ public class Card {
    @JoinColumn(name = "user_id", nullable = false)
    private User user;
 
+   @Column(nullable = false, length = 100)
    private String cardName;
+
    private LocalDate dateOpened;
    private double fee;
    private double apr;
@@ -27,7 +29,9 @@ public class Card {
 
    }
 
-   public Card(String cardName, LocalDate dateOpened, double apr, double fee, double creditLimit, double balance, int dueDay) {
+   public Card(User user, String cardName, LocalDate dateOpened, double apr, double fee,
+               double creditLimit, double balance, int dueDay) {
+      this.user = user;
       this.cardName = cardName;
       this.dateOpened = dateOpened;
       this.apr = apr;
