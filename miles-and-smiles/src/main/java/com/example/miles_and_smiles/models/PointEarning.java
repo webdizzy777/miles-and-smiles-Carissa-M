@@ -17,6 +17,7 @@ public class PointEarning {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @Column(precision = 5, scale = 2, nullable = false)
     private double multiplier;
 
     public PointEarning(){
@@ -52,5 +53,5 @@ public class PointEarning {
     public void setCategory(Category category) {
         this.category = category;
     }
-    
+
 }

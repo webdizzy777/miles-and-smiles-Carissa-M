@@ -17,9 +17,11 @@ public class ExpiringReward {
 
     @Column(nullable = false, length = 100)
     private String title;
+
     @Column(nullable = false)
     private LocalDate expirationDate;
 
+    @Column(columnDefinition = "TEXT")
     private String details;
 
     public ExpiringReward(){

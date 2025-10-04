@@ -19,10 +19,19 @@ public class Card {
    private String cardName;
 
    private LocalDate dateOpened;
+
+   @Column(precision = 5, scale = 2)
    private double fee;
+
+   @Column(precision = 5, scale = 2)
    private double apr;
+
+   @Column(precision = 10, scale = 2)
    private double creditLimit;
+
+   @Column(precision = 10, scale = 2)
    private double balance;
+   
    private int dueDay;
 
    public Card() {
