@@ -2,6 +2,8 @@ package com.example.miles_and_smiles.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 public class PointEarning {
 
@@ -18,13 +20,13 @@ public class PointEarning {
     private Category category;
 
     @Column(precision = 5, scale = 2, nullable = false)
-    private double multiplier;
+    private BigDecimal multiplier;
 
     public PointEarning(){
 
     }
 
-    public PointEarning(Card card, Category category, double multiplier) {
+    public PointEarning(Card card, Category category, BigDecimal multiplier) {
         this.card = card;
         this.category = category;
         this.multiplier = multiplier;
@@ -38,11 +40,11 @@ public class PointEarning {
         this.card = card;
     }
 
-    public double getMultiplier() {
+    public BigDecimal getMultiplier() {
         return multiplier;
     }
 
-    public void setMultiplier(double multiplier) {
+    public void setMultiplier(BigDecimal multiplier) {
         this.multiplier = multiplier;
     }
 

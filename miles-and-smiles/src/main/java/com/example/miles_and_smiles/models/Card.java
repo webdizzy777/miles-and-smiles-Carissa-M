@@ -2,6 +2,7 @@ package com.example.miles_and_smiles.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -21,25 +22,25 @@ public class Card {
    private LocalDate dateOpened;
 
    @Column(precision = 5, scale = 2)
-   private double fee;
+   private BigDecimal fee;
 
    @Column(precision = 5, scale = 2)
-   private double apr;
+   private BigDecimal apr;
 
    @Column(precision = 10, scale = 2)
-   private double creditLimit;
+   private BigDecimal creditLimit;
 
    @Column(precision = 10, scale = 2)
-   private double balance;
-   
+   private BigDecimal balance;
+
    private int dueDay;
 
    public Card() {
 
    }
 
-   public Card(User user, String cardName, LocalDate dateOpened, double apr, double fee,
-               double creditLimit, double balance, int dueDay) {
+   public Card(User user, String cardName, LocalDate dateOpened, BigDecimal apr, BigDecimal fee,
+               BigDecimal creditLimit, BigDecimal balance, int dueDay) {
       this.user = user;
       this.cardName = cardName;
       this.dateOpened = dateOpened;
@@ -66,35 +67,35 @@ public class Card {
       this.dateOpened = dateOpened;
    }
 
-   public double getFee() {
+   public BigDecimal getFee() {
       return fee;
    }
 
-   public void setFee(double fee) {
+   public void setFee(BigDecimal fee) {
       this.fee = fee;
    }
 
-   public double getApr() {
+   public BigDecimal getApr() {
       return apr;
    }
 
-   public void setApr(double apr) {
+   public void setApr(BigDecimal apr) {
       this.apr = apr;
    }
 
-   public double getCreditLimit() {
+   public BigDecimal getCreditLimit() {
       return creditLimit;
    }
 
-   public void setCreditLimit(double creditLimit) {
+   public void setCreditLimit(BigDecimal creditLimit) {
       this.creditLimit = creditLimit;
    }
 
-   public double getBalance() {
+   public BigDecimal getBalance() {
       return balance;
    }
 
-   public void setBalance(double balance) {
+   public void setBalance(BigDecimal balance) {
       this.balance = balance;
    }
 
