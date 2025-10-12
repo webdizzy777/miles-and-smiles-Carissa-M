@@ -12,11 +12,12 @@ public class CardResponseDTO {
     private BigDecimal creditLimit;
     private BigDecimal balance;
     private int dueDay;
-    private String userName;
     private String userEmail;
+    private String firstName;
+    private String lastName;
 
     public CardResponseDTO(int cardId, String cardName, LocalDate dateOpened, BigDecimal fee, BigDecimal apr,
-                           BigDecimal creditLimit, BigDecimal balance, int dueDay, String userName, String userEmail) {
+                           BigDecimal creditLimit, BigDecimal balance, int dueDay, String firstName, String lastName, String userEmail) {
         this.cardId = cardId;
         this.cardName = cardName;
         this.dateOpened = dateOpened;
@@ -25,7 +26,8 @@ public class CardResponseDTO {
         this.creditLimit = creditLimit;
         this.balance = balance;
         this.dueDay = dueDay;
-        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.userEmail = userEmail;
     }
 
@@ -53,8 +55,21 @@ public class CardResponseDTO {
     public int getDueDay() { return dueDay; }
     public void setDueDay(int dueDay) { this.dueDay = dueDay; }
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public String getUserEmail() { return userEmail; }
     public void setUserEmail(String userEmail) { this.userEmail = userEmail; }

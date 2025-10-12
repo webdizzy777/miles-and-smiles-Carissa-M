@@ -10,7 +10,8 @@ public class Card {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int card_id;
+   @Column(name = "card_id")
+   private int cardId;
 
    @ManyToOne
    @JoinColumn(name = "user_id", nullable = false)
@@ -113,6 +114,10 @@ public class Card {
 
    public void setUser(User user) {
       this.user = user;
+   }
+
+   public int getCardId() {
+      return cardId;
    }
 
 }
