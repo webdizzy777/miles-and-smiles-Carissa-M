@@ -28,7 +28,7 @@ public class CardController {
     @GetMapping
     public List<CardResponseDTO> getAllCards() {
         // get all cards from the database
-        // turn them into a stream list we can process one by one)=
+        // turn them into a stream list we can process one by one
         return cardRepository.findAll().stream()
                 // for each card, create a new CardResponseDTO
                 .map(card -> new CardResponseDTO(
@@ -71,10 +71,9 @@ public class CardController {
         );
     }
 
-
     // add a new card to the database when a card object is received from the front end as JSON
     @PostMapping
-    public CardResponseDTO ddCard(@RequestBody CardDTO cardDTO) {
+    public CardResponseDTO addCard(@RequestBody CardDTO cardDTO) {
         // get the user from the database using the userId inside the cardDTO
         // if the user does not exist, stop and throw an error message
         User user = userRepository.findById(cardDTO.getUserId())
@@ -112,24 +111,43 @@ public class CardController {
         );
     }
 
-    // update a card when the id is received at /cards/id
-    // use Optional to only run if the card with that id is found
-    // create a new updated card inside map using the JSON data from the front end, then save it
     @PutMapping("/{id}")
-    public Optional<Card> updateCard(@PathVariable int id, @RequestBody Card card){
-        return cardRepository.findById(id).map(updatedCard -> {
-            updatedCard.setCardName(card.getCardName());
-            updatedCard.setDateOpened(card.getDateOpened());
-            updatedCard.setFee(card.getFee());
-            updatedCard.setApr(card.getApr());
-            updatedCard.setCreditLimit(card.getCreditLimit());
-            updatedCard.setBalance(card.getBalance());
-            updatedCard.setDueDay(card.getDueDay());
-            return cardRepository.save(updatedCard);
-        });
-   }
+    public CardResponseDTO updateCard(@PathVariable int id, @RequestBody CardDTO cardDTO) {
 
-   //delete the card by id received at /cards/id
+        // Find the card by ID or throw an error if it doesn’t exist
+        Card existingCard = cardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + id));
+
+        // Update only the fields you allow to change
+        existingCard.setCardName(cardDTO.getCardName());
+        existingCard.setDateOpened(cardDTO.getDateOpened());
+        existingCard.setFee(cardDTO.getFee());
+        existingCard.setApr(cardDTO.getApr());
+        existingCard.setCreditLimit(cardDTO.getCreditLimit());
+        existingCard.setBalance(cardDTO.getBalance());
+        existingCard.setDueDay(cardDTO.getDueDay());
+
+        // Save the updated card
+        Card savedCard = cardRepository.save(existingCard);
+
+        // Return a clean CardResponseDTO to the frontend
+        User user = savedCard.getUser();
+        return new CardResponseDTO(
+                savedCard.getCardId(),
+                savedCard.getCardName(),
+                savedCard.getDateOpened(),
+                savedCard.getFee(),
+                savedCard.getApr(),
+                savedCard.getCreditLimit(),
+                savedCard.getBalance(),
+                savedCard.getDueDay(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail()
+        );
+    }
+
+    //delete the card by id received at /cards/id
    @DeleteMapping("/{id}")
    public void deleteCard(@PathVariable int id){
         cardRepository.deleteById(id);
