@@ -1,12 +1,11 @@
 package com.example.miles_and_smiles.controllers;
 
 import com.example.miles_and_smiles.dtos.NotableBenefitResponseDTO;
+import com.example.miles_and_smiles.models.Card;
+import com.example.miles_and_smiles.models.NotableBenefit;
 import com.example.miles_and_smiles.repositories.CardRepository;
 import com.example.miles_and_smiles.repositories.NotableBenefitRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class NotableBenefitController {
     @GetMapping("/card/{cardId}")
     public List<NotableBenefitResponseDTO> getNotableBenefitsByCard(@PathVariable int cardId) {
         // Fetch all notable benefits linked to that cardId
-        List<com.example.miles_and_smiles.models.NotableBenefit> benefits = notableBenefitRepository.findByCardCardId(cardId);
+        List<NotableBenefit> benefits = notableBenefitRepository.findByCardCardId(cardId);
 
         // Map each benefit to a DTO
         return benefits.stream()
@@ -74,7 +73,7 @@ public class NotableBenefitController {
     //Get a single notable benefit by its ID
     @GetMapping("/{benefitId}")
     public NotableBenefitResponseDTO getNotableBenefitById(@PathVariable int benefitId) {
-        com.example.miles_and_smiles.models.NotableBenefit benefit = notableBenefitRepository.findById(benefitId)
+        NotableBenefit benefit = notableBenefitRepository.findById(benefitId)
                 .orElseThrow(() -> new RuntimeException("Notable Benefit not found with ID: " + benefitId));
 
         return new NotableBenefitResponseDTO(
@@ -99,7 +98,7 @@ public class NotableBenefitController {
     @GetMapping("/user/{userId}")
     public List<NotableBenefitResponseDTO> getNotableBenefitsByUser(@PathVariable int userId) {
         // Fetch all notable benefits linked to that userId
-        List<com.example.miles_and_smiles.models.NotableBenefit> benefits = notableBenefitRepository.findByCardUserUserId(userId);
+        List<NotableBenefit> benefits = notableBenefitRepository.findByCardUserUserId(userId);
         // Map each benefit to a DTO
         return benefits.stream()
                 .map(benefit -> new NotableBenefitResponseDTO(
@@ -119,6 +118,37 @@ public class NotableBenefitController {
                         benefit.getCard().getUser().getLastName()
                 ))
                 .toList();
+    }
+
+    @PostMapping("/card/{cardId}")
+    public NotableBenefit addNotableBenefit(@PathVariable int cardId, @RequestBody NotableBenefit notableBenefit) {
+        // Find the card in the database by its ID
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + cardId));
+
+        // Associate the notable benefit with the found card
+        notableBenefit.setCard(card);
+
+        // Save the notable benefit to the database
+        return notableBenefitRepository.save(notableBenefit);
+    }
+
+    @PutMapping("/{benefitId}")
+    public NotableBenefit updateNotableBenefit(@PathVariable int benefitId, @RequestBody NotableBenefit notableBenefit) {
+        // Find the existing notable benefit by ID or throw an error if it doesn’t exist
+        NotableBenefit existingBenefit = notableBenefitRepository.findById(benefitId)
+                .orElseThrow(() -> new RuntimeException("Notable Benefit not found with ID: " + benefitId));
+        // Update only the fields you allow to change
+        existingBenefit.setTitle(notableBenefit.getTitle());
+        existingBenefit.setDescription(notableBenefit.getDescription());
+
+        // Save the updated notable benefit
+        return notableBenefitRepository.save(existingBenefit);
+    }
+
+    @DeleteMapping("/{benefitId}")
+    public void deleteNotableBenefit(@PathVariable int benefitId) {
+        notableBenefitRepository.deleteById(benefitId);
     }
 
 }
