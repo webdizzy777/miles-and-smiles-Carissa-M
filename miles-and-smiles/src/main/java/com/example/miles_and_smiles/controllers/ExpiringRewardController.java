@@ -1,6 +1,6 @@
 package com.example.miles_and_smiles.controllers;
 
-import com.example.miles_and_smiles.dtos.ExpiringRewardResponseDTO;
+import com.example.miles_and_smiles.responseDtos.ExpiringRewardResponseDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.ExpiringReward;
 import com.example.miles_and_smiles.repositories.CardRepository;

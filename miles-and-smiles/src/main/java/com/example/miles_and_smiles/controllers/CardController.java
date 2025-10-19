@@ -1,7 +1,7 @@
 package com.example.miles_and_smiles.controllers;
 
 import com.example.miles_and_smiles.dtos.CardDTO;
-import com.example.miles_and_smiles.dtos.CardResponseDTO;
+import com.example.miles_and_smiles.responseDtos.CardResponseDTO;
 import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.CardRepository;
 import com.example.miles_and_smiles.repositories.UserRepository;

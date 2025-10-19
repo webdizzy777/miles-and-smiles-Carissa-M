@@ -1,4 +1,4 @@
-package com.example.miles_and_smiles.dtos;
+package com.example.miles_and_smiles.responseDtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

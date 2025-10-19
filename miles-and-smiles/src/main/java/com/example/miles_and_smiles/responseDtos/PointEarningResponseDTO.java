@@ -1,4 +1,6 @@
-package com.example.miles_and_smiles.dtos;
+package com.example.miles_and_smiles.responseDtos;
+
+import com.example.miles_and_smiles.dtos.CategoryDTO;
 
 import java.math.BigDecimal;
 

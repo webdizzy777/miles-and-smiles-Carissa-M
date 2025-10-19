@@ -1,6 +1,6 @@
 package com.example.miles_and_smiles.controllers;
 
-import com.example.miles_and_smiles.dtos.NotableBenefitResponseDTO;
+import com.example.miles_and_smiles.responseDtos.NotableBenefitResponseDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.NotableBenefit;
 import com.example.miles_and_smiles.repositories.CardRepository;

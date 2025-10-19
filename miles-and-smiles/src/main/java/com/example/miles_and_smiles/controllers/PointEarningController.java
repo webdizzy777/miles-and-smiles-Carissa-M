@@ -3,6 +3,7 @@ package com.example.miles_and_smiles.controllers;
 import com.example.miles_and_smiles.dtos.*;
 import com.example.miles_and_smiles.models.*;
 import com.example.miles_and_smiles.repositories.*;
+import com.example.miles_and_smiles.responseDtos.PointEarningResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
