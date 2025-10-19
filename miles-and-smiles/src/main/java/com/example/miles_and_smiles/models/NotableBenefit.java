@@ -7,7 +7,8 @@ public class NotableBenefit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int benefit_id;
+    @Column(name = "benefit_id")
+    private int benefitId;
 
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
@@ -27,6 +28,10 @@ public class NotableBenefit {
         this.card = card;
         this.title = title;
         this.description = description;
+    }
+
+    public int getBenefitId() {
+        return benefitId;
     }
 
     public Card getCard() {
