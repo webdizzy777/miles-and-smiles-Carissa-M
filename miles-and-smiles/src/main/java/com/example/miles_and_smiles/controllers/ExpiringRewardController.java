@@ -115,7 +115,6 @@ public class ExpiringRewardController {
         return expiringRewardRepository.save(expiringReward);
     }
 
-
     @PutMapping("/{rewardId}")
     public ExpiringReward updateExpiringReward(@PathVariable int rewardId, @RequestBody ExpiringReward rewardDetails) {
         ExpiringReward existingReward = expiringRewardRepository.findById(rewardId)
