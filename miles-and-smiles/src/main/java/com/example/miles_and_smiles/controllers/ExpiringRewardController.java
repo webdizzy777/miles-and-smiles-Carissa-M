@@ -3,7 +3,6 @@ package com.example.miles_and_smiles.controllers;
 import com.example.miles_and_smiles.dtos.ExpiringRewardResponseDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.ExpiringReward;
-import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.CardRepository;
 import com.example.miles_and_smiles.repositories.ExpiringRewardRepository;
 import org.springframework.web.bind.annotation.*;

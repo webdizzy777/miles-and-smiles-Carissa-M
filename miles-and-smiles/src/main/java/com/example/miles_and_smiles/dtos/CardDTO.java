@@ -1,7 +1,5 @@
 package com.example.miles_and_smiles.dtos;
 
-import com.example.miles_and_smiles.models.User;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

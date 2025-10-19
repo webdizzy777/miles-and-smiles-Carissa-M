@@ -8,7 +8,6 @@ import com.example.miles_and_smiles.repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
 import com.example.miles_and_smiles.models.Card;
 import java.util.List;
-import java.util.Optional;
 
 // tell Spring this class handles web requests & then set the base URL
 @RestController
