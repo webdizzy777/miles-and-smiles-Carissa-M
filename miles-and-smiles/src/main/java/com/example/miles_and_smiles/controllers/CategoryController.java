@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.controllers;
 
+import com.example.miles_and_smiles.models.Category;
 import com.example.miles_and_smiles.responseDtos.CategoryResponseDTO;
 import com.example.miles_and_smiles.repositories.CategoryRepository;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,6 @@ public class CategoryController {
         this.categoryRepository = categoryRepository;
     }
 
-    // Handle GET requests to /categories
     @GetMapping
     public List<CategoryResponseDTO> getAllCategories() {
         return categoryRepository.findAll().stream()
@@ -27,4 +27,26 @@ public class CategoryController {
                 ))
                 .toList();
     }
+
+    @GetMapping("/{id}")
+    public CategoryResponseDTO getCategoryById(@PathVariable int id) {
+        return categoryRepository.findById(id)
+                .map(category -> new CategoryResponseDTO(
+                        category.getCategoryId(),
+                        category.getCategoryName()
+                ))
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+    }
+
+    @PostMapping
+    public CategoryResponseDTO addCategory(@RequestBody CategoryResponseDTO dto) {
+        Category category = categoryRepository.save(new Category(dto.getCategoryName()));
+        return new CategoryResponseDTO(category.getCategoryId(), category.getCategoryName());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCategory(@PathVariable int id) {
+        categoryRepository.deleteById(id);
+    }
+
 }
