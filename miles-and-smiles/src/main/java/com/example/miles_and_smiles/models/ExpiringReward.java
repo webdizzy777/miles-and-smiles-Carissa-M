@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "expiring_reward")
 public class ExpiringReward {
 
     @Id

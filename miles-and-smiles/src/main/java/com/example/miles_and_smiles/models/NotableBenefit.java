@@ -3,6 +3,7 @@ package com.example.miles_and_smiles.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "notable_benefit")
 public class NotableBenefit {
 
     @Id
