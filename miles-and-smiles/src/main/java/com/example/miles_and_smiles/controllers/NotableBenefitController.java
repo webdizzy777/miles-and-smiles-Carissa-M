@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/NotableBenefits")
+@RequestMapping("/notable-benefits")
 public class NotableBenefitController {
 
     private final NotableBenefitRepository notableBenefitRepository;

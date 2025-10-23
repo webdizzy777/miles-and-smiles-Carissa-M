@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ExpiringRewards")
+@RequestMapping("/expiring-rewards")
 public class ExpiringRewardController {
 
     private final ExpiringRewardRepository expiringRewardRepository;

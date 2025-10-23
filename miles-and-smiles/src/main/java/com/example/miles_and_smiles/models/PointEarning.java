@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -12,10 +13,12 @@ public class PointEarning {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int earning_id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
     private Card card;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

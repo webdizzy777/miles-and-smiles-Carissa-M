@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public class ExpiringReward {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reward_id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
     private Card card;

@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public class Card {
    @Column(name = "card_id")
    private int cardId;
 
+   @JsonIgnore
    @ManyToOne
    @JoinColumn(name = "user_id", nullable = false)
    private User user;

@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,7 @@ public class NotableBenefit {
     @Column(name = "benefit_id")
     private int benefitId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
     private Card card;
