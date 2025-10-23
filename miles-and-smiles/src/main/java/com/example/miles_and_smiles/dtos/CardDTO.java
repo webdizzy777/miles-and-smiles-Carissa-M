@@ -3,7 +3,7 @@ package com.example.miles_and_smiles.dtos;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class CardDTO{
+public class CardDTO {
     private int userId;
     private String cardName;
     private LocalDate dateOpened;
@@ -13,67 +13,27 @@ public class CardDTO{
     private BigDecimal balance;
     private int dueDay;
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    public String getCardName() { return cardName; }
+    public void setCardName(String cardName) { this.cardName = cardName; }
 
-    public int getDueDay() {
-        return dueDay;
-    }
+    public LocalDate getDateOpened() { return dateOpened; }
+    public void setDateOpened(LocalDate dateOpened) { this.dateOpened = dateOpened; }
 
-    public void setDueDay(int dueDay) {
-        this.dueDay = dueDay;
-    }
+    public BigDecimal getFee() { return fee; }
+    public void setFee(BigDecimal fee) { this.fee = fee; }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
+    public BigDecimal getApr() { return apr; }
+    public void setApr(BigDecimal apr) { this.apr = apr; }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
+    public BigDecimal getCreditLimit() { return creditLimit; }
+    public void setCreditLimit(BigDecimal creditLimit) { this.creditLimit = creditLimit; }
 
-    public BigDecimal getCreditLimit() {
-        return creditLimit;
-    }
+    public BigDecimal getBalance() { return balance; }
+    public void setBalance(BigDecimal balance) { this.balance = balance; }
 
-    public void setCreditLimit(BigDecimal creditLimit) {
-        this.creditLimit = creditLimit;
-    }
-
-    public BigDecimal getApr() {
-        return apr;
-    }
-
-    public void setApr(BigDecimal apr) {
-        this.apr = apr;
-    }
-
-    public BigDecimal getFee() {
-        return fee;
-    }
-
-    public void setFee(BigDecimal fee) {
-        this.fee = fee;
-    }
-
-    public LocalDate getDateOpened() {
-        return dateOpened;
-    }
-
-    public void setDateOpened(LocalDate dateOpened) {
-        this.dateOpened = dateOpened;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
-    }
+    public int getDueDay() { return dueDay; }
+    public void setDueDay(int dueDay) { this.dueDay = dueDay; }
 }
