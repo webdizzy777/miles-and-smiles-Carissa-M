@@ -1,6 +1,7 @@
 package com.example.miles_and_smiles.models;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -22,6 +23,9 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Card> cards;
+
     public User(){
 
     }
@@ -40,6 +44,10 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
+    public List<Card> getCards() { return cards;}
+
+    public void setCards(List<Card> cards) {this.cards = cards;}
+
     public String getFirstName() {
         return firstName;
     }
@@ -56,9 +64,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
     public void setEmail(String email) {
         this.email = email;

@@ -2,7 +2,7 @@ package com.example.miles_and_smiles.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -39,6 +39,15 @@ public class Card {
 
    private int dueDay;
 
+   @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<ExpiringReward> expiringRewards;
+
+   @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<NotableBenefit> notableBenefits;
+
+   @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<PointEarning> pointEarnings;
+
    public Card() {
 
    }
@@ -53,6 +62,30 @@ public class Card {
       this.creditLimit = creditLimit;
       this.balance = balance;
       this.dueDay = dueDay;
+   }
+
+   public List<ExpiringReward> getExpiringRewards() {
+      return expiringRewards;
+   }
+
+   public void setExpiringRewards(List<ExpiringReward> expiringRewards) {
+      this.expiringRewards = expiringRewards;
+   }
+
+   public List<NotableBenefit> getNotableBenefits() {
+      return notableBenefits;
+   }
+
+   public void setNotableBenefits(List<NotableBenefit> notableBenefits) {
+      this.notableBenefits = notableBenefits;
+   }
+
+   public List<PointEarning> getPointEarnings() {
+      return pointEarnings;
+   }
+
+   public void setPointEarnings(List<PointEarning> pointEarnings) {
+      this.pointEarnings = pointEarnings;
    }
 
    public String getCardName() {
