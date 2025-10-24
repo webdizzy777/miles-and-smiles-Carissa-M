@@ -1,57 +1,97 @@
 package com.example.miles_and_smiles.controllers;
 
+import com.example.miles_and_smiles.dtos.UserDTO;
 import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.UserRepository;
+import com.example.miles_and_smiles.responseDtos.UserResponseDTO;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
 
-// handle requests for users
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserRepository userRepository;
 
-    // inject the UserRepository so we can talk to the database
-    public UserController(UserRepository userRepository){
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    // get all users from the database
     @GetMapping
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponseDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserResponseDTO(
+                        user.getUserId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getEmail(),
+                        user.getCreatedAt()
+                ))
+                .toList();
     }
 
-    // get one user by id from /users/id
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id){
-        return userRepository.findById(id).orElse(null);
+    public UserResponseDTO getUser(@PathVariable int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+
+        return new UserResponseDTO(
+                user.getUserId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getCreatedAt()
+        );
     }
 
-    // add a new user to the database
     @PostMapping
-    public User addUser(@RequestBody User user){
-        return userRepository.save(user);
+    public UserResponseDTO addUser(@RequestBody UserDTO dto) {
+        User user = new User(
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getEmail(),
+                dto.getPassword()
+        );
+        User savedUser = userRepository.save(user);
+
+        return new UserResponseDTO(
+                savedUser.getUserId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail(),
+                savedUser.getCreatedAt()
+        );
     }
 
-    // update a user when the id is received at /users/id
-    // use Optional to only run if the user with that id is found
     @PutMapping("/{id}")
-    public Optional<User> updateUser(@PathVariable int id, @RequestBody User user){
-        return userRepository.findById(id).map(updatedUser -> {
-            updatedUser.setFirstName(user.getFirstName());
-            updatedUser.setLastName(user.getLastName());
-            updatedUser.setEmail(user.getEmail());
-            updatedUser.setPassword(user.getPassword());
-            return userRepository.save(updatedUser);
-        });
+    public UserResponseDTO updateUser(@PathVariable int id, @RequestBody UserDTO dto) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
+
+        existingUser.setFirstName(dto.getFirstName());
+        existingUser.setLastName(dto.getLastName());
+        existingUser.setEmail(dto.getEmail());
+        existingUser.setPassword(dto.getPassword());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return new UserResponseDTO(
+                updatedUser.getUserId(),
+                updatedUser.getFirstName(),
+                updatedUser.getLastName(),
+                updatedUser.getEmail(),
+                updatedUser.getCreatedAt()
+        );
     }
 
-    // delete the user by id received at /users/id
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable int id){
+    public void deleteUser(@PathVariable int id) {
+
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with ID: " + id);
+        }
+
         userRepository.deleteById(id);
     }
 }

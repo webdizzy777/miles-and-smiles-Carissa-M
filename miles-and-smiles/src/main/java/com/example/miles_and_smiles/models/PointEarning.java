@@ -11,7 +11,8 @@ public class PointEarning {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int earning_id;
+    @Column(name = "earning_id")
+    private int earningId;
 
     @JsonIgnore
     @ManyToOne
@@ -35,6 +36,8 @@ public class PointEarning {
         this.category = category;
         this.multiplier = multiplier;
     }
+
+    public int getEarningId() {return earningId;}
 
     public Card getCard() {
         return card;

@@ -37,6 +37,8 @@ public class User {
         this.password = password;
     }
 
+    public int getUserId() {return userId;}
+
     //PrePersist will run automatically before hibernate inserts a row into the table
     //Use it to set createdAt to the current time for the timestamp
     @PrePersist

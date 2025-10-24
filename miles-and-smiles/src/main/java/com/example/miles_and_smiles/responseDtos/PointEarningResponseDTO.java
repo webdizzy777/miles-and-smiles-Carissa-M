@@ -1,23 +1,25 @@
 package com.example.miles_and_smiles.responseDtos;
 
-import com.example.miles_and_smiles.dtos.CategoryDTO;
 import java.math.BigDecimal;
 
 public class PointEarningResponseDTO {
     private int earningId;
     private int cardId;
-    private CategoryDTO category;
+    private int categoryId;
+    private String categoryName;
     private BigDecimal multiplier;
 
-    public PointEarningResponseDTO(int earningId, int cardId, CategoryDTO category, BigDecimal multiplier) {
+    public PointEarningResponseDTO(int earningId, int cardId, int categoryId, String categoryName, BigDecimal multiplier) {
         this.earningId = earningId;
         this.cardId = cardId;
-        this.category = category;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
         this.multiplier = multiplier;
     }
 
     public int getEarningId() { return earningId; }
     public int getCardId() { return cardId; }
-    public CategoryDTO getCategory() { return category; }
+    public int getCategoryId() { return categoryId; }
+    public String getCategoryName() { return categoryName; }
     public BigDecimal getMultiplier() { return multiplier; }
 }

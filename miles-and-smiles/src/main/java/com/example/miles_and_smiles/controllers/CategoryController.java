@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
-    // Inject the CategoryRepository to talk to the database
     private final CategoryRepository categoryRepository;
 
     public CategoryController(CategoryRepository categoryRepository) {
@@ -40,13 +39,21 @@ public class CategoryController {
 
     @PostMapping
     public CategoryResponseDTO addCategory(@RequestBody CategoryResponseDTO dto) {
-        Category category = categoryRepository.save(new Category(dto.getCategoryName()));
-        return new CategoryResponseDTO(category.getCategoryId(), category.getCategoryName());
+        if (categoryRepository.findByCategoryName(dto.getCategoryName()).isPresent()) {
+            throw new RuntimeException("Category already exists: " + dto.getCategoryName());
+        } else {
+            Category category = categoryRepository.save(new Category(dto.getCategoryName()));
+            return new CategoryResponseDTO(category.getCategoryId(), category.getCategoryName());
+        }
     }
 
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable int id) {
+
+        if (!categoryRepository.existsById(id)) {
+            throw new RuntimeException("Category not found with ID: " + id);
+        }
+
         categoryRepository.deleteById(id);
     }
-
 }

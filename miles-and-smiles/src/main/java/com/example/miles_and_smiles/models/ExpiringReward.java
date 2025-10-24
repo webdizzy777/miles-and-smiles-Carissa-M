@@ -11,7 +11,8 @@ public class ExpiringReward {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int reward_id;
+    @Column(name = "reward_id")
+    private int rewardId;
 
     @JsonIgnore
     @ManyToOne
@@ -37,6 +38,8 @@ public class ExpiringReward {
         this.expirationDate = expirationDate;
         this.card = card;
     }
+
+    public int getRewardId() {return rewardId;}
 
     public Card getCard() {
         return card;

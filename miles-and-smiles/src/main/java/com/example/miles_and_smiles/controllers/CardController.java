@@ -1,20 +1,19 @@
 package com.example.miles_and_smiles.controllers;
 
 import com.example.miles_and_smiles.dtos.CardDTO;
-import com.example.miles_and_smiles.responseDtos.CardResponseDTO;
+import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.CardRepository;
 import com.example.miles_and_smiles.repositories.UserRepository;
+import com.example.miles_and_smiles.responseDtos.CardResponseDTO;
 import org.springframework.web.bind.annotation.*;
-import com.example.miles_and_smiles.models.Card;
+
 import java.util.List;
 
-// tell Spring this class handles web requests & then set the base URL
 @RestController
 @RequestMapping("/cards")
 public class CardController {
 
-    // inject the Card and User Repository so we can talk to the database
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
 
@@ -23,13 +22,11 @@ public class CardController {
         this.userRepository = userRepository;
     }
 
-    // handle GET requests to /cards
+    //Use a stream to loop through every card and extract only the fields
+    //wanted to return to the frontend as a list of Response DTOs
     @GetMapping
     public List<CardResponseDTO> getAllCards() {
-        // get all cards from the database
-        // turn them into a stream list we can process one by one
         return cardRepository.findAll().stream()
-                // for each card, create a new CardResponseDTO
                 .map(card -> new CardResponseDTO(
                         card.getCardId(),
                         card.getCardName(),
@@ -39,21 +36,17 @@ public class CardController {
                         card.getCreditLimit(),
                         card.getBalance(),
                         card.getDueDay(),
-                        card.getUser().getFirstName(),
-                        card.getUser().getLastName(),
-                        card.getUser().getEmail()
+                        card.getUser().getUserId()
                 ))
-                // collect everything back into a list to return as JSON
                 .toList();
     }
 
-    //Return a single Card object when id entered into /cards/id or else return null
+    //If the card doesn’t exist throw an error message.
+    // Otherwise create a DTO with the card’s info.
     @GetMapping("/{id}")
     public CardResponseDTO getCard(@PathVariable int id) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Card not found with ID: " + id));
-
-        User user = card.getUser();
 
         return new CardResponseDTO(
                 card.getCardId(),
@@ -64,25 +57,42 @@ public class CardController {
                 card.getCreditLimit(),
                 card.getBalance(),
                 card.getDueDay(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail()
+                card.getUser().getUserId()
         );
     }
 
-    // add a new card to the database when a card object is received from the front end as JSON
+    @GetMapping("/user/{userId}")
+    public List<CardResponseDTO> getCardsByUser(@PathVariable int userId) {
+        List<Card> cards = cardRepository.findByUserUserId(userId);
+
+        if(cards.isEmpty()) {
+            throw new RuntimeException("No cards found for User ID: " + userId);
+        }
+
+        return cards.stream()
+                .map(card -> new CardResponseDTO(
+                        card.getCardId(),
+                        card.getCardName(),
+                        card.getDateOpened(),
+                        card.getFee(),
+                        card.getApr(),
+                        card.getCreditLimit(),
+                        card.getBalance(),
+                        card.getDueDay(),
+                        card.getUser().getUserId()
+                ))
+                .toList();
+    }
+
     @PostMapping
     public CardResponseDTO addCard(@RequestBody CardDTO cardDTO) {
-        // get the user from the database using the userId inside the cardDTO
-        // if the user does not exist, stop and throw an error message
+        // find the user who owns this card
         User user = userRepository.findById(cardDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + cardDTO.getUserId()));
 
-        // create a new card and set its fields
+        // create a new Card object and fill in its fields
         Card card = new Card();
-        // attach the real User object we just found so Hibernate knows the relationship
         card.setUser(user);
-        // fill in all the card details coming from the front end (through the DTO)
         card.setCardName(cardDTO.getCardName());
         card.setDateOpened(cardDTO.getDateOpened());
         card.setFee(cardDTO.getFee());
@@ -91,10 +101,10 @@ public class CardController {
         card.setBalance(cardDTO.getBalance());
         card.setDueDay(cardDTO.getDueDay());
 
-        // save the card to the database
+        // save the new card
         Card savedCard = cardRepository.save(card);
 
-        //return only fields we want from our DTO
+        // return response
         return new CardResponseDTO(
                 savedCard.getCardId(),
                 savedCard.getCardName(),
@@ -104,20 +114,16 @@ public class CardController {
                 savedCard.getCreditLimit(),
                 savedCard.getBalance(),
                 savedCard.getDueDay(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail()
+                user.getUserId()
         );
     }
 
+
     @PutMapping("/{id}")
     public CardResponseDTO updateCard(@PathVariable int id, @RequestBody CardDTO cardDTO) {
-
-        // Find the card by ID or throw an error if it doesn’t exist
         Card existingCard = cardRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Card not found with ID: " + id));
 
-        // Update only the fields you allow to change
         existingCard.setCardName(cardDTO.getCardName());
         existingCard.setDateOpened(cardDTO.getDateOpened());
         existingCard.setFee(cardDTO.getFee());
@@ -126,11 +132,8 @@ public class CardController {
         existingCard.setBalance(cardDTO.getBalance());
         existingCard.setDueDay(cardDTO.getDueDay());
 
-        // Save the updated card
         Card savedCard = cardRepository.save(existingCard);
 
-        // Return a clean CardResponseDTO to the frontend
-        User user = savedCard.getUser();
         return new CardResponseDTO(
                 savedCard.getCardId(),
                 savedCard.getCardName(),
@@ -140,16 +143,18 @@ public class CardController {
                 savedCard.getCreditLimit(),
                 savedCard.getBalance(),
                 savedCard.getDueDay(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail()
+                savedCard.getUser().getUserId()
         );
     }
 
-    //delete the card by id received at /cards/id
-   @DeleteMapping("/{id}")
-   public void deleteCard(@PathVariable int id){
+
+    @DeleteMapping("/{id}")
+    public void deleteCard(@PathVariable int id) {
+
+        if(!cardRepository.existsById(id)) {
+            throw new RuntimeException("Card not found with ID: " + id);
+        }
+
         cardRepository.deleteById(id);
     }
-
 }

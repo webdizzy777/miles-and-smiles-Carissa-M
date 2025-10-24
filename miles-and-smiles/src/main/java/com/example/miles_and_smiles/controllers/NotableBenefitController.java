@@ -1,5 +1,6 @@
 package com.example.miles_and_smiles.controllers;
 
+import com.example.miles_and_smiles.dtos.NotableBenefitDTO;
 import com.example.miles_and_smiles.responseDtos.NotableBenefitResponseDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.NotableBenefit;
@@ -29,16 +30,7 @@ public class NotableBenefitController {
                         benefit.getTitle(),
                         benefit.getDescription(),
                         benefit.getCard().getCardId(),
-                        benefit.getCard().getCardName(),
-                        benefit.getCard().getDateOpened(),
-                        benefit.getCard().getFee(),
-                        benefit.getCard().getApr(),
-                        benefit.getCard().getCreditLimit(),
-                        benefit.getCard().getBalance(),
-                        benefit.getCard().getDueDay(),
-                        benefit.getCard().getUser().getEmail(),
-                        benefit.getCard().getUser().getFirstName(),
-                        benefit.getCard().getUser().getLastName()
+                        benefit.getCard().getCardName()
                 ))
                 .toList();
     }
@@ -46,26 +38,19 @@ public class NotableBenefitController {
     //Get all notable benefits for a specific card by its cardId
     @GetMapping("/card/{cardId}")
     public List<NotableBenefitResponseDTO> getNotableBenefitsByCard(@PathVariable int cardId) {
-        // Fetch all notable benefits linked to that cardId
         List<NotableBenefit> benefits = notableBenefitRepository.findByCardCardId(cardId);
 
-        // Map each benefit to a DTO
+        if(!cardRepository.existsById(cardId)) {
+            throw new RuntimeException("Card not found with ID: " + cardId);
+        }
+
         return benefits.stream()
                 .map(benefit -> new NotableBenefitResponseDTO(
                         benefit.getBenefitId(),
                         benefit.getTitle(),
                         benefit.getDescription(),
                         benefit.getCard().getCardId(),
-                        benefit.getCard().getCardName(),
-                        benefit.getCard().getDateOpened(),
-                        benefit.getCard().getFee(),
-                        benefit.getCard().getApr(),
-                        benefit.getCard().getCreditLimit(),
-                        benefit.getCard().getBalance(),
-                        benefit.getCard().getDueDay(),
-                        benefit.getCard().getUser().getEmail(),
-                        benefit.getCard().getUser().getFirstName(),
-                        benefit.getCard().getUser().getLastName()
+                        benefit.getCard().getCardName()
                 ))
                 .toList();
     }
@@ -81,73 +66,78 @@ public class NotableBenefitController {
                 benefit.getTitle(),
                 benefit.getDescription(),
                 benefit.getCard().getCardId(),
-                benefit.getCard().getCardName(),
-                benefit.getCard().getDateOpened(),
-                benefit.getCard().getFee(),
-                benefit.getCard().getApr(),
-                benefit.getCard().getCreditLimit(),
-                benefit.getCard().getBalance(),
-                benefit.getCard().getDueDay(),
-                benefit.getCard().getUser().getEmail(),
-                benefit.getCard().getUser().getFirstName(),
-                benefit.getCard().getUser().getLastName()
+                benefit.getCard().getCardName()
         );
     }
 
     //Get all notable benefits for a specific user by their userId
     @GetMapping("/user/{userId}")
     public List<NotableBenefitResponseDTO> getNotableBenefitsByUser(@PathVariable int userId) {
-        // Fetch all notable benefits linked to that userId
+
+        if (!cardRepository.existsById(userId)) {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+
         List<NotableBenefit> benefits = notableBenefitRepository.findByCardUserUserId(userId);
-        // Map each benefit to a DTO
         return benefits.stream()
                 .map(benefit -> new NotableBenefitResponseDTO(
                         benefit.getBenefitId(),
                         benefit.getTitle(),
                         benefit.getDescription(),
                         benefit.getCard().getCardId(),
-                        benefit.getCard().getCardName(),
-                        benefit.getCard().getDateOpened(),
-                        benefit.getCard().getFee(),
-                        benefit.getCard().getApr(),
-                        benefit.getCard().getCreditLimit(),
-                        benefit.getCard().getBalance(),
-                        benefit.getCard().getDueDay(),
-                        benefit.getCard().getUser().getEmail(),
-                        benefit.getCard().getUser().getFirstName(),
-                        benefit.getCard().getUser().getLastName()
+                        benefit.getCard().getCardName()
                 ))
                 .toList();
     }
 
-    @PostMapping("/card/{cardId}")
-    public NotableBenefit addNotableBenefit(@PathVariable int cardId, @RequestBody NotableBenefit notableBenefit) {
-        // Find the card in the database by its ID
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + cardId));
+    @PostMapping
+    public NotableBenefitResponseDTO addNotableBenefit(@RequestBody NotableBenefitDTO dto) {
+        Card card = cardRepository.findById(dto.getCardId())
+                .orElseThrow(() -> new RuntimeException("Card not found with ID: " + dto.getCardId()));
 
-        // Associate the notable benefit with the found card
-        notableBenefit.setCard(card);
+        NotableBenefit benefit = new NotableBenefit();
+        benefit.setCard(card);
+        benefit.setTitle(dto.getTitle());
+        benefit.setDescription(dto.getDescription());
 
-        // Save the notable benefit to the database
-        return notableBenefitRepository.save(notableBenefit);
+        NotableBenefit savedBenefit = notableBenefitRepository.save(benefit);
+
+        return new NotableBenefitResponseDTO(
+                savedBenefit.getBenefitId(),
+                savedBenefit.getTitle(),
+                savedBenefit.getDescription(),
+                card.getCardId(),
+                card.getCardName()
+        );
     }
 
     @PutMapping("/{benefitId}")
-    public NotableBenefit updateNotableBenefit(@PathVariable int benefitId, @RequestBody NotableBenefit notableBenefit) {
-        // Find the existing notable benefit by ID or throw an error if it doesn’t exist
+    public NotableBenefitResponseDTO updateNotableBenefit(@PathVariable int benefitId,
+                                                          @RequestBody NotableBenefitDTO dto) {
         NotableBenefit existingBenefit = notableBenefitRepository.findById(benefitId)
                 .orElseThrow(() -> new RuntimeException("Notable Benefit not found with ID: " + benefitId));
-        // Update only the fields you allow to change
-        existingBenefit.setTitle(notableBenefit.getTitle());
-        existingBenefit.setDescription(notableBenefit.getDescription());
 
-        // Save the updated notable benefit
-        return notableBenefitRepository.save(existingBenefit);
+        existingBenefit.setTitle(dto.getTitle());
+        existingBenefit.setDescription(dto.getDescription());
+
+        NotableBenefit updatedBenefit = notableBenefitRepository.save(existingBenefit);
+
+        return new NotableBenefitResponseDTO(
+                updatedBenefit.getBenefitId(),
+                updatedBenefit.getTitle(),
+                updatedBenefit.getDescription(),
+                updatedBenefit.getCard().getCardId(),
+                updatedBenefit.getCard().getCardName()
+        );
     }
 
     @DeleteMapping("/{benefitId}")
     public void deleteNotableBenefit(@PathVariable int benefitId) {
+
+        if(!notableBenefitRepository.existsById(benefitId)) {
+            throw new RuntimeException("Notable Benefit not found with ID: " + benefitId);
+        }
+
         notableBenefitRepository.deleteById(benefitId);
     }
 
