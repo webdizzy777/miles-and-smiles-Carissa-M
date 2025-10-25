@@ -48,6 +48,21 @@ public class UserController {
         );
     }
 
+    @PostMapping("/login")
+    public String loginUser(@RequestBody UserDTO dto) {
+        // Find user by email
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Email is not registered. Please create an account."));
+
+        // Compare raw password with hashed password in DB
+        if (encoder.matches(dto.getPassword(), user.getPassword())) {
+            return "Login successful! Welcome " + user.getFirstName() + "!";
+        } else {
+            throw new RuntimeException("Invalid email or password");
+        }
+    }
+
+
     @PostMapping("register")
     public UserResponseDTO addUser(@RequestBody UserDTO dto) {
 
@@ -78,7 +93,10 @@ public class UserController {
         existingUser.setFirstName(dto.getFirstName());
         existingUser.setLastName(dto.getLastName());
         existingUser.setEmail(dto.getEmail());
-        existingUser.setPassword(dto.getPassword());
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            existingUser.setPassword(encoder.encode(dto.getPassword()));
+        }
 
         User updatedUser = userRepository.save(existingUser);
 
