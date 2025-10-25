@@ -4,6 +4,7 @@ import com.example.miles_and_smiles.dtos.UserDTO;
 import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.UserRepository;
 import com.example.miles_and_smiles.responseDtos.UserResponseDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @GetMapping
@@ -45,13 +48,16 @@ public class UserController {
         );
     }
 
-    @PostMapping
+    @PostMapping("register")
     public UserResponseDTO addUser(@RequestBody UserDTO dto) {
+
+        String encodedPassword = encoder.encode(dto.getPassword());
+
         User user = new User(
                 dto.getFirstName(),
                 dto.getLastName(),
                 dto.getEmail(),
-                dto.getPassword()
+                encodedPassword
         );
         User savedUser = userRepository.save(user);
 
