@@ -51,20 +51,6 @@ public class UserController {
         );
     }
 
-//    @PostMapping("/login")
-//    public String loginUser(@RequestBody UserDTO dto) {
-//        // Find user by email
-//        User user = userRepository.findByEmail(dto.getEmail())
-//                .orElseThrow(() -> new RuntimeException("Email is not registered. Please create an account."));
-//
-//        // Compare raw password with hashed password in DB
-//        if (encoder.matches(dto.getPassword(), user.getPassword())) {
-//            return "Login successful! Welcome " + user.getFirstName() + "!";
-//        } else {
-//            throw new RuntimeException("Invalid email or password");
-//        }
-//    }
-
     @PostMapping("/login")
     // Return an HTTP response with a JSON body
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO dto) {
@@ -89,27 +75,38 @@ public class UserController {
         }
     }
 
+    @PostMapping("/register")
+    // Return an HTTP response with a JSON body
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserDTO dto) {
 
-    @PostMapping("register")
-    public UserResponseDTO addUser(@RequestBody UserDTO dto) {
+        // Check if a user with the same email already exists in the database
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            // If user already exists, return a 400 Bad Request with a message
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "User with this email already exists. Please login."));
+        }
 
+        // Encrypt the plain text password before saving to the database
         String encodedPassword = encoder.encode(dto.getPassword());
 
-        User user = new User(
+        // Create a new User object using the data from the request body
+        User newUser = new User(
                 dto.getFirstName(),
                 dto.getLastName(),
                 dto.getEmail(),
                 encodedPassword
         );
-        User savedUser = userRepository.save(user);
 
-        return new UserResponseDTO(
-                savedUser.getUserId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName(),
-                savedUser.getEmail(),
-                savedUser.getCreatedAt()
-        );
+        // Save the new user record to the database
+        User savedUser = userRepository.save(newUser);
+
+        // Return a success response with selected user details
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of(
+                        "message", "User registered successfully!",
+                        "firstName", savedUser.getFirstName(),
+                        "email", savedUser.getEmail()
+                ));
     }
 
     @PutMapping("/{id}")

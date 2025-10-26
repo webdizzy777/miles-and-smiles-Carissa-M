@@ -10,6 +10,7 @@ import NotableBenefits from './components/NotableBenefits.jsx';
 import FinancialSnapshot from './components/FinancialSnapshot.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import SignUp from './components/SignUp.jsx';
 
 const initialCards = [
     {
@@ -140,6 +141,7 @@ function App() {
           <Route path='/ExpiringRewards' element={<ExpiringRewards cards={cards} setCards={setCards}/>} />
           <Route path='/NotableBenefits' element={<NotableBenefits cards={cards} />} />
           <Route path='/FinancialSnapshot' element={<FinancialSnapshot cards={cards} />} />
+          <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} firstName={firstName}/>} />
         </Routes>
           <Footer/>
       </Router>
