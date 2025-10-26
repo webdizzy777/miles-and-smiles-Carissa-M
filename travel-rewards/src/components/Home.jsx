@@ -1,34 +1,23 @@
-import Header from './Header.jsx';
-import Footer from './Footer.jsx';
+
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from 'react';
 
 function Home({setIsLoggedIn, setFirstName}){
 
-    let errorMsg = (<p className='center blackOpaque'>
-                        <span className="material-symbols-outlined">
-                            warning
-                        </span> &nbsp;
-                        Incorrect Login Details
-                        &nbsp;<span className="material-symbols-outlined">
-                            warning
-                        </span>
-                    </p>);
-
     // using the useNavigate function from react-router-dom to navigate to the dashboard if login is true
     const navigate = useNavigate();
 
-    //utilize useState to store the input fields from the form
+    //useState to store the input fields from the form and error messages
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    // utilize useState to be able to set the display error to tue below
-    const [displayError, setDisplayError] = useState(false)
+    const [displayError, setDisplayError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
     async function loginUser() {
         try {
             // reset error display on new login attempt
-            setDisplayError(false); 
+            setDisplayError(false);
+            setErrorMsg('');
 
             //Send a POST request to the server with the email and password
             const response = await fetch('http://localhost:8080/users/login', {
@@ -48,12 +37,15 @@ function Home({setIsLoggedIn, setFirstName}){
                 navigate('/dashboard');
             } else {
                 //Show the user an error message
+                const data = await response.json();
+                setErrorMsg(data.message || "Incorrect login details");
                 setDisplayError(true);
             }
 
         } catch (error) {
-            //handle any network or fetch errors
             console.log("Error fetching user data:", error);
+            setErrorMsg("Network error. Please try again later.");
+            setDisplayError(true);
         }
     }
 
@@ -79,11 +71,17 @@ function Home({setIsLoggedIn, setFirstName}){
                             <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password"  required />
                         </label>
                         <br /><br />
-                            {displayError ? errorMsg : null}
+                            {displayError && (
+                                <p className='center blackOpaque'>
+                                    <span className="material-symbols-outlined">warning</span> &nbsp;
+                                    {errorMsg}
+                                    &nbsp;<span className="material-symbols-outlined">warning</span>
+                                </p>
+                            )}
                         <button type='submit' className="logInButton">Login</button>
                     </form>
                     <p className='center'>
-                        - Or <Link to='/SignUp'> Sign Up </Link> -
+                       <span className='blackOpaque whiteLink'>- Or <Link className='white' to='/SignUp'> Sign Up </Link> -</span> 
                     </p>
                  </div>
                   <p className='card'>Miles & Smiles is your one-stop destination to track all your travel rewards so you can use them before you lose them! Check out our <Link to='/about'>About Us</Link> page to learn more.</p>

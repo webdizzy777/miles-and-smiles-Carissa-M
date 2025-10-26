@@ -75,6 +75,16 @@ a:hover {
   color: #535bf2;
 }
 
+.whiteLink a {
+  font-weight: bold;
+  color: aliceblue;
+  text-decoration: none;
+}
+
+.whiteLink a:hover {
+  color: rgb(233, 134, 14);
+}
+
 input {
   padding: 10px;
   width: 100%;
@@ -217,6 +227,10 @@ table {
 
 .green {
   color: #34ba89;
+}
+
+.white{
+  color: aliceblue;
 }
 
 .red {
