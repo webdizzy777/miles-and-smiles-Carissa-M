@@ -151,7 +151,6 @@ function AddCardForm({cards, setCards}){
 
     return(
         <>
-            <Header></Header>
             <main>
                 <div className="card">
 
@@ -276,7 +275,6 @@ function AddCardForm({cards, setCards}){
 
                 </div>
             </main>
-            <Footer></Footer>
         </>
     )
 }

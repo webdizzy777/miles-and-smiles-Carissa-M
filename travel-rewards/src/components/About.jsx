@@ -4,7 +4,6 @@ import Footer from './Footer.jsx';
 function About(){
     return(
         <>
-            {/* <Header></Header> */}
             <main>
                 <div className="card">
                     <h2>Welcome to Miles & Smiles!</h2>
@@ -15,7 +14,6 @@ function About(){
                     Travel for free, not fees!</p>
                 </div>
             </main>
-            <Footer></Footer>
         </>
     );
 }

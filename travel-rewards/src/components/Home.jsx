@@ -64,7 +64,6 @@ function Home({setIsLoggedIn, setFirstName}){
 
     return(
         <>
-            {/* <Header></Header> */}
             <main>
                 <div className="loginForm">
                     <h1><span className="blackOpaque">Unlock Your Next Destination!</span></h1> 
@@ -86,7 +85,6 @@ function Home({setIsLoggedIn, setFirstName}){
                  </div>
                   <p className='card'>Miles & Smiles is your one-stop destination to track all your travel rewards so you can use them before you lose them! Check out our <Link to='/about'>About Us</Link> page to learn more.</p>
             </main>
-            <Footer></Footer>
         </>
     );
 }

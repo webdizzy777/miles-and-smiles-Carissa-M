@@ -22,7 +22,6 @@ function Dashboard({cards, setCards}){
                     <FinancialSnapshot cards={cards}></FinancialSnapshot>
                 </div> 
             </main>
-            <Footer></Footer>
         </>
     );
 
