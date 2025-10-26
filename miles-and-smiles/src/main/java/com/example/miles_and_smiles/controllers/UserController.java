@@ -4,10 +4,13 @@ import com.example.miles_and_smiles.dtos.UserDTO;
 import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.repositories.UserRepository;
 import com.example.miles_and_smiles.responseDtos.UserResponseDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -48,17 +51,41 @@ public class UserController {
         );
     }
 
-    @PostMapping("/login")
-    public String loginUser(@RequestBody UserDTO dto) {
-        // Find user by email
-        User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("Email is not registered. Please create an account."));
+//    @PostMapping("/login")
+//    public String loginUser(@RequestBody UserDTO dto) {
+//        // Find user by email
+//        User user = userRepository.findByEmail(dto.getEmail())
+//                .orElseThrow(() -> new RuntimeException("Email is not registered. Please create an account."));
+//
+//        // Compare raw password with hashed password in DB
+//        if (encoder.matches(dto.getPassword(), user.getPassword())) {
+//            return "Login successful! Welcome " + user.getFirstName() + "!";
+//        } else {
+//            throw new RuntimeException("Invalid email or password");
+//        }
+//    }
 
-        // Compare raw password with hashed password in DB
+    @PostMapping("/login")
+    // Return an HTTP response with a JSON body
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO dto) {
+
+        // Look up a user by email, if no user found, immediately stop and throw an error
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Email not found"));
+
+        // Check if plain text password from the request matches the hashed password stored in the database
         if (encoder.matches(dto.getPassword(), user.getPassword())) {
-            return "Login successful! Welcome " + user.getFirstName() + "!";
+
+            //If the passwords match, build a JSON response using Map.of
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login successful!",
+                    "firstName", user.getFirstName()
+            ));
+
         } else {
-            throw new RuntimeException("Invalid email or password");
+            //If the password does not match, send back a 401 Unauthorized response with a JSON message.
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid email or password"));
         }
     }
 

@@ -5,18 +5,16 @@ import { useState } from 'react';
 
 function Home({setIsLoggedIn}){
 
-    //login details
-    const defaultEmail = "launchcode@unit1.com";
-    const defaultPassword = "password";
     let errorMsg = (<p className='center blackOpaque'>
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             warning
                         </span> &nbsp;
                         Incorrect Login Details
-                        &nbsp;<span class="material-symbols-outlined">
+                        &nbsp;<span className="material-symbols-outlined">
                             warning
                         </span>
                     </p>);
+
     // using the useNavigate function from react-router-dom to navigate to the dashboard if login is true
     const navigate = useNavigate();
 
@@ -27,17 +25,41 @@ function Home({setIsLoggedIn}){
     // utilize useState to be able to set the display error to tue below
     const [displayError, setDisplayError] = useState(false)
 
-    //we don't want the page to reload on submission
-    //if our username and password match the default values set logged into true and navigate to dashboard or else display error
+    async function loginUser() {
+        try {
+            // reset error display on new login attempt
+            setDisplayError(false); 
+
+            //Send a POST request to the server with the email and password
+            const response = await fetch('http://localhost:8080/users/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            //Wait for the response from the server
+            if(response.ok){
+                //Convert the response to JSON
+                const data = await response.json();
+                //Pull the first name from the data returned
+                const fisrtName = data.firstName;
+                //Set the user as logged in in the App component
+                setIsLoggedIn(true);
+                navigate('/dashboard');
+            } else {
+                //Show the user an error message
+                setDisplayError(true);
+            }
+
+        } catch (error) {
+            //handle any network or fetch errors
+            console.log("Error fetching user data:", error);
+        }
+    }
+
     function handleLogIn(e){
         e.preventDefault();
-        if(email === defaultEmail && password === defaultPassword){
-            setIsLoggedIn(true);
-            navigate('/dashboard');
-        } else {
-            setDisplayError(true);
-        }
-
+        loginUser();       
     }
 
     return(
