@@ -42,7 +42,7 @@ function Home({setIsLoggedIn}){
                 //Convert the response to JSON
                 const data = await response.json();
                 //Pull the first name from the data returned
-                const fisrtName = data.firstName;
+                const firstName = data.firstName;
                 //Set the user as logged in in the App component
                 setIsLoggedIn(true);
                 navigate('/dashboard');
