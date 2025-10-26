@@ -142,13 +142,13 @@ table {
   width: 100%;
 }
 
-.loginForm {
+.customForm {
   color: aliceblue;
   text-align: left;
   font-size: 16px;
 }
 
-.logInButton {
+.customButton {
   border-radius: 8px;
   padding: 0.6em 1.2em;
   font-size: 1em;

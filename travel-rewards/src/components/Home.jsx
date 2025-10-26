@@ -1,4 +1,3 @@
-
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from 'react';
 
@@ -57,7 +56,7 @@ function Home({setIsLoggedIn, setFirstName}){
     return(
         <>
             <main>
-                <div className="loginForm">
+                <div className="customForm">
                     <h1><span className="blackOpaque">Unlock Your Next Destination!</span></h1> 
                     <h2><span className="blackOpaque">Sign In to See Your Rewards</span></h2>
                     <form onSubmit={handleLogIn}>
@@ -78,7 +77,7 @@ function Home({setIsLoggedIn, setFirstName}){
                                     &nbsp;<span className="material-symbols-outlined">warning</span>
                                 </p>
                             )}
-                        <button type='submit' className="logInButton">Login</button>
+                        <button type='submit' className="customButton">Login</button>
                     </form>
                     <p className='center'>
                        <span className='blackOpaque whiteLink'>- Or <Link className='white' to='/SignUp'> Sign Up </Link> -</span> 

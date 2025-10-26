@@ -1,5 +1,3 @@
-import Header from './Header.jsx';
-import Footer from './Footer.jsx';
 import PointsTable from './PointsTable.jsx';
 import AddCard from './AddCard.jsx';
 import ExpiringRewards from './ExpiringRewards.jsx';
@@ -10,7 +8,6 @@ function Dashboard({cards, setCards}){
 
     return(
         <>
-            {/* <Header></Header> */}
             <main>
                 <div className='center'>
                     <AddCard></AddCard>
