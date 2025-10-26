@@ -3,7 +3,7 @@ import Footer from './Footer.jsx';
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from 'react';
 
-function Home({setIsLoggedIn}){
+function Home({setIsLoggedIn, setFirstName}){
 
     let errorMsg = (<p className='center blackOpaque'>
                         <span className="material-symbols-outlined">
@@ -41,8 +41,8 @@ function Home({setIsLoggedIn}){
             if(response.ok){
                 //Convert the response to JSON
                 const data = await response.json();
-                //Pull the first name from the data returned
-                const firstName = data.firstName;
+                //Pull the first name from the data returned and set it in the App component
+                setFirstName(data.firstName);
                 //Set the user as logged in in the App component
                 setIsLoggedIn(true);
                 navigate('/dashboard');
@@ -64,7 +64,7 @@ function Home({setIsLoggedIn}){
 
     return(
         <>
-            <Header></Header>
+            {/* <Header></Header> */}
             <main>
                 <div className="loginForm">
                     <h1><span className="blackOpaque">Unlock Your Next Destination!</span></h1> 

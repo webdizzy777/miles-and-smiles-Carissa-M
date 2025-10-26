@@ -4,7 +4,7 @@ import Footer from './Footer.jsx';
 function About(){
     return(
         <>
-            <Header></Header>
+            {/* <Header></Header> */}
             <main>
                 <div className="card">
                     <h2>Welcome to Miles & Smiles!</h2>

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import ExpiringRewards from './components/ExpiringRewards.jsx';
 import NotableBenefits from './components/NotableBenefits.jsx';
 import FinancialSnapshot from './components/FinancialSnapshot.jsx';
+import Header from './components/Header.jsx';
 
 const initialCards = [
     {
@@ -121,12 +122,16 @@ function App() {
   //create a variable to hold if user is logged in and a setter function to set if user is logged in. 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  //create a variable to hold the user's first name and a setter function to set the first name
+  const[firstName, setFirstName] = useState("");
+
   return (
     <>
       {/* Route the user to the relevant components when the URL parameter is recognized - check that value of isLogged in before allowing to router to dashboard, otherwise route to the login screen. Use replace to overwrite the history stack so back doesn't take to dashboard.*/}
       <Router>
+          <Header firstName={firstName} isLoggedIn={isLoggedIn} />
         <Routes>
-          <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}/>} />
           <Route path='/dashboard' element={isLoggedIn ? <Dashboard cards={cards} setCards={setCards} /> : <Navigate to="/" replace />} />
           <Route path='/about' element={<About />} />
           <Route path='/AddCardForm' element={<AddCardForm cards={cards} setCards={setCards} />} />

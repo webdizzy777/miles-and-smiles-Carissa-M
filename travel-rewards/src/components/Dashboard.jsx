@@ -10,7 +10,7 @@ function Dashboard({cards, setCards}){
 
     return(
         <>
-            <Header></Header>
+            {/* <Header></Header> */}
             <main>
                 <div className='center'>
                     <AddCard></AddCard>
