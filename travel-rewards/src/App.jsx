@@ -129,7 +129,7 @@ function App() {
     <>
       {/* Route the user to the relevant components when the URL parameter is recognized - check that value of isLogged in before allowing to router to dashboard, otherwise route to the login screen. Use replace to overwrite the history stack so back doesn't take to dashboard.*/}
       <Router>
-          <Header firstName={firstName} isLoggedIn={isLoggedIn} />
+          <Header firstName={firstName} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
           <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}/>} />
           <Route path='/dashboard' element={isLoggedIn ? <Dashboard cards={cards} setCards={setCards} /> : <Navigate to="/" replace />} />
