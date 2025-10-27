@@ -181,7 +181,12 @@ table {
 .container {
   display: flex;
   flex-wrap: wrap;
-  gap: 2em;
+  gap: 2em; 
+}
+
+.containerNoGap {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /*grow and shrink as needed and fill 45% to allow for gap, use border box to include padding and border in the computations*/
@@ -193,6 +198,25 @@ table {
   border-radius: 8px;
   padding: 2em;
   background-color: aliceblue;
+}
+
+.sideBySideThreeCard {
+  flex: 1 1 30%;
+  min-width: 250px;
+  box-sizing: border-box;
+  background-color: aliceblue;
+}
+
+.alignBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.alignMiddle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sideBySideFooter {
@@ -241,7 +265,8 @@ table {
 /*On screens that are smaller than 576 px make my side by  side cards stack vertically by making them take up the full width of the container by starting at 100% width and allowed to grow to fill and shrink to avoid overflow*/
 @media (max-width: 768px) {
   .sideBySideCard,
-  .sideBySideFooter {
+  .sideBySideFooter
+  .sideBySideThreeCard {
     flex: 1 1 100%;
   }
 }

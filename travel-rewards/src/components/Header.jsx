@@ -7,8 +7,8 @@ function Header({firstName, isLoggedIn, setIsLoggedIn}){
         if(isLoggedIn){
             return(
                 <>
-                    <p className="center">Welcome, {firstName}!</p>
-                    <p><Link to='/dashboard'>Dashboard</Link> | <Link to='#'>Card Management</Link> | <Link to='/about'>About Us</Link> | <Link to='#' onClick={() => setIsLoggedIn(false)} >Log Out</Link></p>     
+                    <div className='sideBySideThreeCard alignMiddle'><h2 className="center">Welcome, {firstName}!</h2></div>
+                    <div className='sideBySideThreeCard alignBottom'><p className='center'><Link to='/dashboard'>Dashboard</Link> | <Link to='#'>Card Management</Link> | <Link to='/about'>About Us</Link> | <Link to='#' onClick={() => setIsLoggedIn(false)} >Log Out</Link></p></div>    
                 </>
             )
         } 
@@ -17,10 +17,10 @@ function Header({firstName, isLoggedIn, setIsLoggedIn}){
     return(
         <>
             <header>
-                <div>
-                    <img src={Logo} alt="Travel Logo" />
-                    <h1>Miles & Smiles</h1>
-                    {displayLoggedInDetails()}  
+                <div className='container'>
+                    <div className='sideBySideThreeCard'><img src={Logo} alt="Travel Logo" />
+                    <h1>Miles & Smiles</h1></div>
+                    {displayLoggedInDetails()}
                 </div>
             </header>
         </>
