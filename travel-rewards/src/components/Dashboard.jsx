@@ -4,7 +4,7 @@ import ExpiringRewards from './ExpiringRewards.jsx';
 import NotableBenefits from './NotableBenefits.jsx';
 import FinancialSnapshot from './FinancialSnapshot.jsx';
 
-function Dashboard({cards, setCards}){
+function Dashboard({cards, setCards, userId}){
 
     return(
         <>
@@ -12,11 +12,11 @@ function Dashboard({cards, setCards}){
                 <div className='center'>
                     <AddCard></AddCard>
                 </div>
-                <PointsTable cards={cards}></PointsTable>
+                <PointsTable cards={cards} userId={userId}></PointsTable>
                 <div className='container'>
-                    <ExpiringRewards cards={cards} setCards={setCards}></ExpiringRewards>
-                    <NotableBenefits cards={cards}></NotableBenefits>
-                    <FinancialSnapshot cards={cards}></FinancialSnapshot>
+                    <ExpiringRewards cards={cards} setCards={setCards} userId={userId}></ExpiringRewards>
+                    <NotableBenefits cards={cards} userId={userId}></NotableBenefits>
+                    <FinancialSnapshot cards={cards} userId={userId}></FinancialSnapshot>
                 </div> 
             </main>
         </>

@@ -1,174 +1,120 @@
-//import AddCard from './AddCard.jsx';
+import { useState, useEffect } from 'react';
 
-function PointsTable({cards}){
+function PointsTable({ userId }) {
+  const [earningData, setEarningData] = useState([]);
+  const [error, setError] = useState(null);
 
-    //find the max points value
-    const maxGas = cards.map(card => card.gas);
-    const maxGasValue = Math.max(...maxGas);
+  // Fetch points data when the component mounts or if userId changes
+  useEffect(() => {
+    async function fetchPoints() {
+      try {
+        const response = await fetch(`http://localhost:8080/point-earnings/user/${userId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
 
-    const maxRestaurant = cards.map(card => card.restaurant);
-    const maxRestaurantValue = Math.max(...maxRestaurant);
-
-    const maxSupermarket = cards.map(card => card.supermarket);
-    const maxSupermarketValue = Math.max(...maxSupermarket);
-
-    const maxDiscount = cards.map(card => card.discount);
-    const maxDiscountValue = Math.max(...maxDiscount);
-  
-    const maxWholesale = cards.map(card => card.wholesale);
-    const maxWholesaleValue = Math.max(...maxWholesale);
-
-    const maxOnlineShopping = cards.map(card => card.onlineShopping);
-    const maxOnlineShoppingValue = Math.max(...maxOnlineShopping);
-
-    const maxUtilities = cards.map(card => card.utilities);
-    const maxUtilitiesValue = Math.max(...maxUtilities);
-   
-    const maxInternet = cards.map(card => card.internet);
-    const maxInternetValue = Math.max(...maxInternet);
-
-    const maxPhone = cards.map(card => card.phone);
-    const maxPhoneValue = Math.max(...maxPhone);
-
-    const maxTravel = cards.map(card => card.travel);
-    const maxTravelValue = Math.max(...maxTravel);
+        if (response.ok) {
+          // Convert the response to JSON
+          const data = await response.json();
+          setEarningData(data);
+        } else {
+          // Display an error message if the fetch fails
+          console.log('Error fetching points data');
+          setError('Failed to fetch points');
+        }
+      } catch (err) {
+        // Display an error message if there is a network or other error
+        console.error('Fetch error:', err);
+        setError('An error occurred while fetching points');
+      }
+    }
     
-    const maxOther = cards.map(card => card.other);
-    const maxOtherValue = Math.max(...maxOther);
+    if (userId) {
+      //clear the old points data then load the new user's data
+      setEarningData([])
+      fetchPoints();
+    }
+  }, [userId]);
 
-    //Fill the table, add green style if value matches the max
-    const cardNames = cards.map((cardN)=>(
-        <td key={cardN.id} title={cardN.cardName}>
-            {cardN.cardName}
-        </td>
-    ));
+    // Map through all data retrieved to get each cardName, remove duplicates with a Set,
+    // and convert the result back into an array using spread syntax so we can use it for the column header.
+    const cards = [...new Set(earningData.map(data => data.cardName))];
 
-    const cardGas = cards.map((cardG)=>(
-        <td key={cardG.id}>
-            {cardG.gas === maxGasValue ? <span className="green"><b>{cardG.gas}</b></span> : cardG.gas} 
-        </td>
-    ))
+    // Do the same to group points by category so each row header will be a category
+    const categories = [...new Set(earningData.map(data => data.categoryName))];
 
-    const cardRestaurant = cards.map((cardR) => (
-        <td key={cardR.id}>
-            {cardR.restaurant === maxRestaurantValue? <span className="green"><b>{cardR.restaurant}</b></span> : cardR.restaurant}
-        </td>
-    ));
+  // Create a nested object to hold the category then card multipliers for that category
+  const tableData = {};
+  earningData.forEach(pointCategory => {
+    //if the object for this category doesn't exist yet, create it
+    if (!tableData[pointCategory.categoryName]) {
+      tableData[pointCategory.categoryName] = {};
+    }
+    //Nest the objects by cardName and set the multiplier value
+    tableData[pointCategory.categoryName][pointCategory.cardName] = pointCategory.multiplier;
+  });
 
-    const cardSupermarket = cards.map((cardS)=>(
-        <td key={cardS.id}>
-            {cardS.supermarket === maxSupermarketValue ? <span className="green"><b>{cardS.supermarket}</b></span> : cardS.supermarket}
-        </td>
-    ));
+  // Find the max multiplier per category by declaring an empty object,
+  // then map through our category Set, if the category is in the tableData object,
+  // then add it to the values array and set the maxByCategory object key to the max value from that array
+  const maxByCategory = {};
+  categories.forEach(category => {
+    const values = cards.map(card => tableData[category]?.[card] || 0);
+    maxByCategory[category] = Math.max(...values);
+  });
 
-    const cardDiscount = cards.map((cardD)=>(
-        <td key={cardD.id}>
-            {cardD.discount === maxDiscountValue ? <span className="green"><b>{cardD.discount}</b></span> : cardD.discount}
-        </td>
-    ));
+  return (
+    <div className="card">
+      <h2 className="center">Points Table</h2>
+      <div className="tableContainer">
 
-    const cardWholesale = cards.map((cardW)=>(
-        <td key={cardW.id}>
-            {cardW.wholesale === maxWholesaleValue ? <span className="green"><b>{cardW.wholesale}</b></span> : cardW.wholesale}
-        </td>
-    ));
+        {/* Show error or empty message at the top of the table */}
+        {error && <p className="center red">Error: {error}</p>}
+        {!error && earningData.length === 0 && (
+          <p className="center">No points data found.</p>
+        )}
 
-    const cardOShopping = cards.map((cardO)=>(
-        <td key={cardO.id}>
-            {cardO.onlineShopping === maxOnlineShoppingValue ? <span className="green"><b>{cardO.onlineShopping}</b>
-        </span> : cardO.onlineShopping}</td>
-    ));
+        {/* Only render the table if there is data */}
+        {earningData.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                {cards.map(card => (
+                  // Display each card name as column header
+                  <th key={card}>{card}</th> 
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map(category => (
+                //for each table row, set the header to the category name
+                <tr key={category}>
+                  <th>{category}</th>
+                  {cards.map(card => {
+                    //and if the category exist for this card, set the value to the card's multiplier
+                    const value = tableData[category]?.[card];
+                    //check if the value set above is equal to what was found for the max in this category
+                    const isMax = value === maxByCategory[category] && value > 0;
+                    return (
+                      <td key={card}>
+                        {value
+                          ? isMax
+                            ? <span className="green"><b>{value}</b></span>
+                            : value
+                          : '-'}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
 
-    const cardUtilities = cards.map((cardU)=>(
-        <td key={cardU.id}>
-            {cardU.utilities === maxUtilitiesValue ? <span className="green"><b>{cardU.utilities}</b></span> : cardU.utilities}
-        </td>
-    ));
-
-    const cardInternet = cards.map((cardI)=>(
-        <td key={cardI.id}>
-            {cardI.internet === maxInternetValue ? <span className="green"><b>{cardI.internet}</b></span> : cardI.internet}
-        </td>
-    ));
-
-    const cardPhone = cards.map((cardP)=>(
-        <td key={cardP.id}>
-            {cardP.phone === maxPhoneValue ? <span className="green"><b>{cardP.phone}</b></span> : cardP.phone}
-        </td>
-    ));
-
-    const cardTravel = cards.map((cardT)=>(
-        <td key={cardT.id}>
-            {cardT.travel === maxTravelValue ? <span className="green"><b>{cardT.travel}</b></span> : cardT.travel}
-        </td>
-    ));
-
-    const cardOther = cards.map((cardOt)=>(
-        <td key={cardOt.id}>
-            {cardOt.other === maxOtherValue ? <span className="green"><b>{cardOt.other}</b></span> : cardOt.other}
-        </td>
-    ));
-    
-    return(
-        <div className="card">
-            <h2  className="center">Points Table</h2>
-            <div className="tableContainer">
-                <table >
-                    <tbody>
-                        <tr>
-                            <th title="Card Name">Card Name</th>
-                            {cardNames}
-                        </tr>
-                        <tr>
-                            <th title="Gas">Gas</th>
-                            {cardGas}
-                        </tr>
-                        <tr>
-                            <th title="Restaurant">Restaurant</th>
-                            {cardRestaurant}
-                        </tr>
-                        <tr>
-                            <th title="Supermarket">Supermarket</th>
-                            {cardSupermarket}
-                        </tr>
-                        <tr>
-                            <th title="Discount">Discount</th>
-                            {cardDiscount}
-                        </tr>
-                        <tr>
-                            <th title="Wholesale">Wholesale</th>
-                            {cardWholesale}
-                        </tr>
-                        <tr>
-                            <th title="Online Shopping">Online Shopping</th>
-                            {cardOShopping}
-                        </tr>
-                        <tr>
-                            <th title="Utilities">Utilities</th>
-                            {cardUtilities}
-                        </tr>
-                        <tr>
-                            <th title="Internet">Internet</th>
-                            {cardInternet}
-                        </tr>
-                        <tr>
-                            <th title="Phone">Phone</th>
-                            {cardPhone}
-                        </tr>
-                        <tr>
-                            <th title="Travel">Travel</th>
-                            {cardTravel}
-                        </tr>
-                        <tr>
-                            <th title="Other">Other</th>
-                            {cardOther}
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>        
-    )
-
+      </div>
+    </div>
+  );
 }
 
 export default PointsTable;

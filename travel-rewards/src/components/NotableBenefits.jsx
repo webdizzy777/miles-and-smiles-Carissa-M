@@ -1,4 +1,4 @@
-function NotableBenefits({cards}){
+function NotableBenefits({cards, userId}){
     
     const cardNotableBen = cards
     .filter(card => (card.notableBenefit !== ""))

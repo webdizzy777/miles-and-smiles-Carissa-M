@@ -1,5 +1,5 @@
 import { formatDate, formatCurrency, formatDueDate } from "./Functions";
-function FinancialSnapshot({cards}){
+function FinancialSnapshot({cards, userId}){
 
     //find lowest APR
     const aprs = cards.map((c)=>c.apr);

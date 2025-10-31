@@ -1,6 +1,6 @@
 import { formatDate } from "./Functions.jsx";
 
-function ExpiringRewards({cards, setCards}){
+function ExpiringRewards({cards, setCards, userId}){
     
     //when the used icon is pressed remove the benefit 
     //map through the cards for the card with the matching id, set the array to only change the benefit

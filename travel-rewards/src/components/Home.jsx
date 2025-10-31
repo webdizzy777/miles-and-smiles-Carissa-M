@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from 'react';
 
-function Home({setIsLoggedIn, setFirstName}){
+function Home({setIsLoggedIn, setFirstName, setUserId}) {
 
     // using the useNavigate function from react-router-dom to navigate to the dashboard if login is true
     const navigate = useNavigate();
@@ -25,18 +25,20 @@ function Home({setIsLoggedIn, setFirstName}){
                 body: JSON.stringify({ email, password })
             });
 
+            //Convert the response to JSON
+            const data = await response.json();
+
             //Wait for the response from the server
             if(response.ok){
-                //Convert the response to JSON
-                const data = await response.json();
                 //Pull the first name from the data returned and set it in the App component
                 setFirstName(data.firstName);
                 //Set the user as logged in in the App component
                 setIsLoggedIn(true);
+                //Set the userId in the App component
+                setUserId(data.userId);
                 navigate('/dashboard');
             } else {
                 //Show the user an error message
-                const data = await response.json();
                 setErrorMsg(data.message || "Incorrect login details");
                 setDisplayError(true);
             }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-function SignUp({setIsLoggedIn, setFirstName, firstName}){
+function SignUp({setIsLoggedIn, setFirstName, setUserId, firstName}){
 
     //Declare state variables to hold form data and error display
     const [lastName, setLastName] = useState('');
@@ -46,7 +46,8 @@ function SignUp({setIsLoggedIn, setFirstName, firstName}){
                 const data = await response.json();
                 setFirstName(data.firstName);
                 //Set the user as logged in in the App component
-               setIsLoggedIn(true);
+                setIsLoggedIn(true);
+                setUserId(data.userId);
                 navigate('/dashboard');
             } else {
                 const data = await response.json();

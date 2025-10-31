@@ -127,21 +127,23 @@ function App() {
   //create a variable to hold the user's first name and a setter function to set the first name
   const[firstName, setFirstName] = useState("");
 
+  const [userId, setUserId] = useState(null);
+
   return (
     <>
       {/* Route the user to the relevant components when the URL parameter is recognized - check that value of isLogged in before allowing to router to dashboard, otherwise route to the login screen. Use replace to overwrite the history stack so back doesn't take to dashboard.*/}
       <Router>
           <Header firstName={firstName} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
-          <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}/>} />
-          <Route path='/dashboard' element={isLoggedIn ? <Dashboard cards={cards} setCards={setCards} /> : <Navigate to="/" replace />} />
+          <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}  setUserId={setUserId}/>} />
+          <Route path='/dashboard' element={isLoggedIn ? <Dashboard cards={cards} setCards={setCards}  userId={userId} /> : <Navigate to="/" replace />} />
           <Route path='/about' element={<About />} />
           <Route path='/AddCardForm' element={<AddCardForm cards={cards} setCards={setCards} />} />
-          <Route path='/PointsTable' element={<PointsTable cards={cards}/>} />
-          <Route path='/ExpiringRewards' element={<ExpiringRewards cards={cards} setCards={setCards}/>} />
-          <Route path='/NotableBenefits' element={<NotableBenefits cards={cards} />} />
-          <Route path='/FinancialSnapshot' element={<FinancialSnapshot cards={cards} />} />
-          <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} firstName={firstName}/>} />
+          <Route path='/PointsTable' element={<PointsTable cards={cards} userId={userId}/>} />
+          <Route path='/ExpiringRewards' element={<ExpiringRewards cards={cards} setCards={setCards} userId={userId}/>} />
+          <Route path='/NotableBenefits' element={<NotableBenefits cards={cards} userId={userId}/>} />
+          <Route path='/FinancialSnapshot' element={<FinancialSnapshot cards={cards} userId={userId}/>} />
+          <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
         </Routes>
           <Footer/>
       </Router>
