@@ -142,7 +142,7 @@ function App() {
           <Route path='/PointsTable' element={<PointsTable userId={userId}/>} />
           <Route path='/ExpiringRewards' element={<ExpiringRewards userId={userId}/>} />
           <Route path='/NotableBenefits' element={<NotableBenefits userId={userId}/>} />
-          <Route path='/FinancialSnapshot' element={<FinancialSnapshot cards={cards} userId={userId}/>} />
+          <Route path='/FinancialSnapshot' element={<FinancialSnapshot userId={userId}/>} />
           <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
         </Routes>
           <Footer/>

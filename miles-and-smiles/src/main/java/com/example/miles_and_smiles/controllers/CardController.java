@@ -63,13 +63,12 @@ public class CardController {
 
     @GetMapping("/user/{userId}")
     public List<CardResponseDTO> getCardsByUser(@PathVariable int userId) {
-        List<Card> cards = cardRepository.findByUserUserId(userId);
 
-        if(cards.isEmpty()) {
-            throw new RuntimeException("No cards found for User ID: " + userId);
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found with ID: " + userId);
         }
 
-        return cards.stream()
+        return cardRepository.findByUserUserId(userId).stream()
                 .map(card -> new CardResponseDTO(
                         card.getCardId(),
                         card.getCardName(),

@@ -16,8 +16,8 @@ function Dashboard({cards, setCards, userId}){
                 <div className='container'>
                     <ExpiringRewards cards={cards} setCards={setCards} userId={userId}></ExpiringRewards>
                     <NotableBenefits cards={cards} userId={userId}></NotableBenefits>
-                    <FinancialSnapshot cards={cards} userId={userId}></FinancialSnapshot>
                 </div> 
+                <FinancialSnapshot cards={cards} userId={userId}></FinancialSnapshot>
             </main>
         </>
     );
