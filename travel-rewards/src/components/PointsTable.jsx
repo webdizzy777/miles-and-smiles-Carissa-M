@@ -31,7 +31,7 @@ function PointsTable({ userId }) {
     
     if (userId) {
       //clear the old points data then load the new user's data
-      setEarningData([])
+      setEarningData([]);
       fetchPoints();
     }
   }, [userId]);
