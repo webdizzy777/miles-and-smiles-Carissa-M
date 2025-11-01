@@ -36,12 +36,12 @@ function PointsTable({ userId }) {
     }
   }, [userId]);
 
-    // Map through all data retrieved to get each cardName, remove duplicates with a Set,
+    // Map through all data retrieved to get each cardName, sort alphabetically, remove duplicates with a Set,
     // and convert the result back into an array using spread syntax so we can use it for the column header.
-    const cards = [...new Set(earningData.map(data => data.cardName))];
+    const cards = [...new Set(earningData.map(data => data.cardName).sort())];
 
     // Do the same to group points by category so each row header will be a category
-    const categories = [...new Set(earningData.map(data => data.categoryName))];
+    const categories = [...new Set(earningData.map(data => data.categoryName).sort())];
 
   // Create a nested object to hold the category then card multipliers for that category
   const tableData = {};
