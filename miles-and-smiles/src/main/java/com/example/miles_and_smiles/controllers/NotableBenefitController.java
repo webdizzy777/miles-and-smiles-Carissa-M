@@ -1,11 +1,13 @@
 package com.example.miles_and_smiles.controllers;
 
 import com.example.miles_and_smiles.dtos.NotableBenefitDTO;
+import com.example.miles_and_smiles.models.User;
 import com.example.miles_and_smiles.responseDtos.NotableBenefitResponseDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.NotableBenefit;
 import com.example.miles_and_smiles.repositories.CardRepository;
 import com.example.miles_and_smiles.repositories.NotableBenefitRepository;
+import com.example.miles_and_smiles.repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +18,12 @@ public class NotableBenefitController {
 
     private final NotableBenefitRepository notableBenefitRepository;
     private final CardRepository cardRepository;
+    private final  UserRepository userRepository;
 
-    public NotableBenefitController(NotableBenefitRepository notableBenefitRepository, CardRepository cardRepository) {
+    public NotableBenefitController(NotableBenefitRepository notableBenefitRepository, CardRepository cardRepository, UserRepository userRepository) {
         this.notableBenefitRepository = notableBenefitRepository;
         this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -74,7 +78,7 @@ public class NotableBenefitController {
     @GetMapping("/user/{userId}")
     public List<NotableBenefitResponseDTO> getNotableBenefitsByUser(@PathVariable int userId) {
 
-        if (!cardRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
 
