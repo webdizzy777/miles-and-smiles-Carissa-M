@@ -4,6 +4,7 @@ import com.example.miles_and_smiles.dtos.ExpiringRewardDTO;
 import com.example.miles_and_smiles.models.Card;
 import com.example.miles_and_smiles.models.ExpiringReward;
 import com.example.miles_and_smiles.repositories.CardRepository;
+import com.example.miles_and_smiles.repositories.UserRepository;
 import com.example.miles_and_smiles.repositories.ExpiringRewardRepository;
 import com.example.miles_and_smiles.responseDtos.ExpiringRewardResponseDTO;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,13 @@ public class ExpiringRewardController {
 
     private final ExpiringRewardRepository expiringRewardRepository;
     private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
     public ExpiringRewardController(ExpiringRewardRepository expiringRewardRepository,
-                                    CardRepository cardRepository) {
+                                    CardRepository cardRepository, UserRepository userRepository) {
         this.expiringRewardRepository = expiringRewardRepository;
         this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -76,7 +79,7 @@ public class ExpiringRewardController {
     public List<ExpiringRewardResponseDTO> getExpiringRewardsByUser(@PathVariable int userId) {
         List<ExpiringReward> rewards = expiringRewardRepository.findByCardUserUserId(userId);
 
-        if (!cardRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found with ID: " + userId);
         }
 
