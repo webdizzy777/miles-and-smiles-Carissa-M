@@ -1,9 +1,7 @@
-import Footer from "./Footer.jsx"
-import Header from "./Header.jsx"
 import { useState } from "react";
 import { Link } from "react-router";
 
-function AddCardForm({cards, setCards}){
+function AddCardForm({userId}){
 
     //creating variable and setter function for state to remember the variable data
     const [cardNm, setCardNm] = useState("Card Name");
@@ -30,34 +28,35 @@ function AddCardForm({cards, setCards}){
     const [cardDue, setCardDue] = useState("");
  
     //creating function to fill the new card with the initial card data plus the new values we set.
-    function handleAddCard(){
-        const idN = (cards.length) + 1;
-        const newCard = {
-            id: idN,
-            cardName: cardNm,
-            gas: cardGs,
-            restaurant: cardRs,
-            supermarket: cardSp,
-            discount: cardDs,
-            wholesale: cardWh,
-            onlineShopping: cardOn,
-            utilities: cardUt,
-            internet: cardIn,
-            phone: cardPh,
-            travel: cardTr,
-            other: cardOh,
-            expiringRewards: cardExp,
-            expiringDate: cardExD,
-            notableBenefitTitle: cardNbT,
-            notableBenefit: cardNble,
-            fee: cardFee, 
-            dateOpened: cardDate,
-            apr: cardApr,
-            creditLimit: cardLoc,
-            balance: cardBal,
-            dueDate: cardDue
-            }
-        setCards([...cards, newCard]);
+    function handleAddCard(e){
+        // const idN = (cards.length) + 1;
+        // const newCard = {
+        //     id: idN,
+        //     cardName: cardNm,
+        //     gas: cardGs,
+        //     restaurant: cardRs,
+        //     supermarket: cardSp,
+        //     discount: cardDs,
+        //     wholesale: cardWh,
+        //     onlineShopping: cardOn,
+        //     utilities: cardUt,
+        //     internet: cardIn,
+        //     phone: cardPh,
+        //     travel: cardTr,
+        //     other: cardOh,
+        //     expiringRewards: cardExp,
+        //     expiringDate: cardExD,
+        //     notableBenefitTitle: cardNbT,
+        //     notableBenefit: cardNble,
+        //     fee: cardFee, 
+        //     dateOpened: cardDate,
+        //     apr: cardApr,
+        //     creditLimit: cardLoc,
+        //     balance: cardBal,
+        //     dueDate: cardDue
+        //     }
+        // setCards([...cards, newCard]);
+
     }
 
     //  using e.target.value to set the variables on each by capturing the value of the event input change. 
@@ -153,126 +152,142 @@ function AddCardForm({cards, setCards}){
         <>
             <main>
                 <div className="card">
-
                     <form>
 
-                    <label htmlFor="cardName"><b>Card Name</b>
-                        <br />
-                        <input type="text" className="addCardInput" id="cardName" value={cardNm} onChange={handleAddName} required />
-                    </label>
+                    <h3>Details</h3>
+
+                    <label htmlFor="cardName"><b>Card Name</b></label>
+                    <input type="text" className="addCardInput" id="cardName" value={cardNm} onChange={handleAddName} required />
                     
+                    <div className="containerNoGap">
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="fee"><b>Annual Fee</b></label>
+                            <input type="number" className="addCardInput" id="fee" value={cardFee} onChange={handleAddFee} />
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="openDate"><b>Date Opened</b></label>
+                            <input type="date" className="addCardInput" id="openDate" value={cardDate} onChange={handleAddDate} />
+                        </div>
+                    </div>
 
-                    <label htmlFor="gas"><b>Gas Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="gas" value={cardGs} onChange={handleAddGas} required />
-                    </label>
+                    <div className="containerNoGap">
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="apr"><b>APR</b></label>
+                            <input type="number" step={0.01} className="addCardInput" id="apr" value={cardApr} onChange={handleAddApr} />
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="loc"><b>Credit Limit</b></label>
+                            <input type="number" className="addCardInput" id="loc" value={cardLoc} onChange={handleAddLoc} />
+                        </div>
+                    </div>
 
-                    <label htmlFor="restaurant"><b>Restaurant Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="restaurant" value={cardRs} onChange={handleAddRestaurant} required />
-                    </label>
-                    
+                    <div className="containerNoGap">
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="bal"><b>Balance</b></label>
+                            <input type="number" step={0.01} className="addCardInput" id="bal" value={cardBal} onChange={handleAddBal} />
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                            <label htmlFor="due"><b>Day of Month Due</b></label>
+                            <input type="number" className="addCardInput" id="due" value={cardDue} onChange={handleAddDue} />
+                        </div>
+                    </div>
 
-                    <label htmlFor="supermarket"><b>Supermarket Points</b>
-                        <br />
+                    <h3>Points Multipliers</h3>
+
+                    <div className="threeCardRow">
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="gas"><b>Gas Points</b></label>
+                        <input type="number" className="addCardInput" id="gas" value={cardGs} onChange={handleAddGas} />
+                    </div>
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="restaurant"><b>Restaurant Points</b></label>
+                        <input type="number" className="addCardInput" id="restaurant" value={cardRs} onChange={handleAddRestaurant} />
+                    </div>
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="supermarket"><b>Supermarket Points</b></label>
                         <input type="number" className="addCardInput" id="supermarket" value={cardSp} onChange={handleAddSupermarket} />
-                    </label>
+                    </div>
+                    </div>
 
-                    <label htmlFor="discount"><b>Discount Store Points</b>
-                        <br />
+                    <div className="threeCardRow">
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="discount"><b>Discount Store Points</b></label>
                         <input type="number" className="addCardInput" id="discount" value={cardDs} onChange={handleAddDiscount} />
-                    </label>
-
-                    <label htmlFor="wholesale"><b>Wholesale Store Points</b>
-                        <br />
+                    </div>
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="wholesale"><b>Wholesale Store Points</b></label>
                         <input type="number" className="addCardInput" id="wholesale" value={cardWh} onChange={handleAddWholesale} />
-                    </label>
+                    </div>
+                    <div className="sideBySideThreeCardForm">
+                        <label htmlFor="online"><b>Online Shopping Points</b></label>
+                        <input type="number" className="addCardInput" id="online" value={cardOn} onChange={handleAddOnlineShopping} />
+                    </div>
+                    </div>
 
-                    <label htmlFor="online"><b>Online Shopping Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="online" value={cardDs} onChange={handleAddOnlineShopping} />
-                    </label>
+                    <div className="threeCardRow">
+                        <div className="sideBySideThreeCardForm">
+                            <label htmlFor="utilities"><b>Utility Points</b></label>
+                            <input type="number" className="addCardInput" id="utilities" value={cardUt} onChange={handleAddUtilities} />
+                        </div>
+                        <div className="sideBySideThreeCardForm">
+                            <label htmlFor="internet"><b>Internet Points</b></label>
+                            <input type="number" className="addCardInput" id="internet" value={cardIn} onChange={handleAddInternet} />
+                        </div>
+                        <div className="sideBySideThreeCardForm">
+                            <label htmlFor="phone"><b>Phone Points</b></label>
+                            <input type="number" className="addCardInput" id="phone" value={cardPh} onChange={handleAddPhone} />
+                        </div>
+                    </div>
 
-                    <label htmlFor="utilities"><b>Utility Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="utilities" value={cardUt} onChange={handleAddUtilities} />
-                    </label>
+                    <div className="threeCardRow">
+                        <div className="sideBySideThreeCardForm">
+                            <label htmlFor="travel"><b>Travel Points</b></label>
+                            <input type="number" className="addCardInput" id="travel" value={cardTr} onChange={handleAddTravel} />
+                        </div>
+                        <div className="sideBySideThreeCardForm">
+                            <label htmlFor="other"><b>Other Spend Points</b></label>
+                            <input type="number" className="addCardInput" id="other" value={cardOh} onChange={handleAddOther} />
+                        </div>
+                    </div>
 
-                    <label htmlFor="internet"><b>Internet Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="internet" value={cardIn} onChange={handleAddInternet} />
-                    </label>
+                    <h3>Expiring Rewards</h3>
+                    <div className="containerNoGap">
+                        <div className="sideBySideCardMinPadding">
+                        <label htmlFor="expiring"><b>Reward That Expires</b>
+                            <br />
+                            <input type="text" className="addCardInput" id="expiring" value={cardExp} onChange={handleAddExpiringRewards} />
+                        </label>
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                        <label htmlFor="expDate"><b>Use By Date</b>
+                            <br />
+                            <input type="date" className="addCardInput" id="expDate" value={cardExD} onChange={handleAddExpiringDate} />
+                        </label>
+                        </div>
+                    </div>
 
-                    <label htmlFor="phone"><b>Phone Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="phone" value={cardPh} onChange={handleAddPhone} />
-                    </label>
-
-                    <label htmlFor="travel"><b>Travel Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="travel" value={cardTr} onChange={handleAddTravel} />
-                    </label>
-
-                    <label htmlFor="other"><b>Other Spend Points</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="other" value={cardOh} onChange={handleAddOther} />
-                    </label>
-
-                    <label htmlFor="expiring"><b>Reward That Expires</b>
-                        <br />
-                        <input type="text" className="addCardInput" id="expiring" value={cardExp} onChange={handleAddExpiringRewards} />
-                    </label>
-
-                    <label htmlFor="expDate"><b>Use By Date</b>
-                        <br />
-                        <input type="date" className="addCardInput" id="expDate" value={cardExD} onChange={handleAddExpiringDate} />
-                    </label>
-
-                    <label htmlFor="notableTitle"><b>Title for Notable Benefit</b>
-                        <br />
-                        <input type="text" className="addCardInput" id="notableTitle" value={cardNbT} onChange={handleAddNotableTitle} />
-                    </label>
-
-                    <label htmlFor="notable"><b>Notable Benefit Description</b>
-                        <br />
-                        <input type="text" className="addCardInput" id="notable" value={cardNble} onChange={handleAddNotableBenefit} />
-                    </label>
-
-                    <label htmlFor="fee"><b>Annual Fee</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="fee" value={cardFee} onChange={handleAddFee} />
-                    </label>
-
-                    <label htmlFor="openDate"><b>Date Opened</b>
-                        <br />
-                        <input type="date" className="addCardInput" id="openDate" value={cardDate} onChange={handleAddDate} />
-                    </label>
-
-                    <label htmlFor="apr"><b>APR</b>
-                        <br />
-                        <input type="number" step={0.01} className="addCardInput" id="apr" value={cardApr} onChange={handleAddApr} />
-                    </label>
-
-                    <label htmlFor="loc"><b>Credit Limit</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="loc" value={cardLoc} onChange={handleAddLoc} />
-                    </label>
-
-                    <label htmlFor="bal"><b>Balance</b>
-                        <br />
-                        <input type="number" step={0.01} className="addCardInput" id="bal" value={cardBal} onChange={handleAddBal} />
-                    </label>
-
-                    <label htmlFor="due"><b>Day of Month Due</b>
-                        <br />
-                        <input type="number" className="addCardInput" id="due" value={cardDue} onChange={handleAddDue} />
-                    </label>
+                    <h3>Notable Benefit</h3>
+                    <div className="containerNoGap">
+                        <div className="sideBySideCardMinPadding">
+                        <label htmlFor="notableTitle"><b>Title for Notable Benefit</b>
+                            <br />
+                            <input type="text" className="addCardInput" id="notableTitle" value={cardNbT} onChange={handleAddNotableTitle} />
+                        </label>
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                        <label htmlFor="notable"><b>Notable Benefit Description</b>
+                            <br />
+                            <input type="text" className="addCardInput" id="notable" value={cardNble} onChange={handleAddNotableBenefit} />
+                        </label>
+                        </div>
+                    </div>
 
                     <br /><br />
-                    <Link to="/dashboard"><button onClick={handleAddCard}>Add Card</button></Link>
+                    <Link to="/dashboard">
+                        <button onClick={handleAddCard}>Add Card</button>
+                    </Link>
 
                     </form>
-
                 </div>
             </main>
         </>

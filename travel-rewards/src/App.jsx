@@ -139,7 +139,7 @@ function App() {
           <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}  setUserId={setUserId}/>} />
           <Route path='/dashboard' element={isLoggedIn ? <Dashboard cards={cards} setCards={setCards}  userId={userId} /> : <Navigate to="/" replace />} />
           <Route path='/about' element={<About />} />
-          <Route path='/AddCardForm' element={<AddCardForm cards={cards} setCards={setCards} />} />
+          <Route path='/AddCardForm' element={<AddCardForm userId={userId} />} />
           <Route path='/PointsTable' element={<PointsTable userId={userId}/>} />
           <Route path='/ExpiringRewards' element={<ExpiringRewards userId={userId}/>} />
           <Route path='/NotableBenefits' element={<NotableBenefits userId={userId}/>} />

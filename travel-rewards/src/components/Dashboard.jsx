@@ -10,7 +10,7 @@ function Dashboard({cards, setCards, userId}){
         <>
             <main>
                 <div className='center'>
-                    <AddCard></AddCard>
+                    <AddCard userId={userId}></AddCard>
                 </div>
                 <PointsTable cards={cards} userId={userId}></PointsTable>
                 <div className='container'>

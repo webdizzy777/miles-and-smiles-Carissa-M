@@ -200,11 +200,33 @@ table {
   background-color: aliceblue;
 }
 
+.sideBySideCardMinPadding {
+  flex: 1 1 45%;
+  min-width: 250px;
+  box-sizing: border-box;
+  padding: 1em;
+  background-color: aliceblue;
+}
+
 .sideBySideThreeCard {
   flex: 1 1 30%;
   min-width: 250px;
   box-sizing: border-box;
   background-color: aliceblue;
+}
+
+.sideBySideThreeCardForm {
+  flex: 1 1 32%;              
+  min-width: 230px;  
+  box-sizing: border-box;
+  padding: 1em;
+  background-color: aliceblue;
+}
+
+.threeCardRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; 
 }
 
 .alignBottom {
