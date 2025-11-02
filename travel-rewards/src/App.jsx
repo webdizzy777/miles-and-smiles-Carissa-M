@@ -12,6 +12,7 @@ import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import SignUp from './components/SignUp.jsx';
 import CardManagement from './components/CardManagement.jsx';
+import EditCard from './components/EditCard.jsx';
 
 const initialCards = [
     {
@@ -146,6 +147,7 @@ function App() {
           <Route path='/FinancialSnapshot' element={<FinancialSnapshot userId={userId}/>} />
           <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
           <Route path='/CardManagement' element={isLoggedIn ? <CardManagement userId={userId} /> : <Navigate to="/" replace /> } />
+          <Route path='/editCard/:cardId' element={isLoggedIn ? <EditCard userId={userId} /> : <Navigate to="/" replace /> } />
         </Routes>
           <Footer/>
       </Router>

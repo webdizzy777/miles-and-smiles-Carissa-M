@@ -42,8 +42,16 @@ function CardManagement({userId}){
         return(
             <tr key={c.cardId}>
             <td title={c.cardName}>{c.cardName}</td>    
-            <td>Edit</td>
-            <td>Delete</td>
+            <td><Link to={`/editCard/${c.cardId}`}>
+                <span class="material-symbols-outlined">
+                edit_square
+                </span>
+            </Link></td>
+            <td>
+                <span class="material-symbols-outlined">
+                delete
+                </span>
+            </td>
         </tr>
         );
     });
@@ -62,7 +70,7 @@ function CardManagement({userId}){
                             {/*Display error message if card data isn't found */} 
                             {error && <p className="error-message">{error}</p>}
                             {cardData.length === 0 && !error && (
-                                <p className="center" >No card data found. <Link to='/addCard'>Please Add your first card!</Link></p> 
+                                <p className="center" >No card data found. <AddCard></AddCard></p> 
                             )}
 
                             {/* Only show table if there is card data */}
