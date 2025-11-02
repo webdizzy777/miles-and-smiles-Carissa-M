@@ -15,8 +15,6 @@ function AddCardForm({userId}){
     const [newCardPhonePoints, setNewCardPhonePoints] = useState(0);
     const [newCardTravelPoints, setNewCardTravelPoints] = useState(0);
     const [newCardOtherPoints, setNewCardOtherPoints] = useState(0);
-    // const [newCardNotableBenefitTitle, setNewCardNotableBenefitTitle] = useState("");
-    // const [newCardNotableBenefitDescription, setNewCardNotableBenefitDescription] = useState("");
     const [newCardFee, setNewCardFee] = useState(0);
     const [newDateOpened, setNewDateOpened] = useState("2025-01-01");
     const [newApr, setNewApr] = useState(0.00);
@@ -105,43 +103,25 @@ function AddCardForm({userId}){
                     });
 
                     if(!notableResponse.ok){
-                    setError("Failed to add notable benefit.");
-                }
+                        setError("Failed to add notable benefit.");
+                    }
 
                 }
-                //create the notable benefit object
-                // const newNotableBenefit = {
-                //     title: newCardNotableBenefitTitle,        
-                //     description: newCardNotableBenefitDescription,  
-                //     cardId: cardId,
-                //     cardName: newCardName 
-                // }
-                
-                //Post the new notable benefit to the backend  
-                // const notableResponse = await fetch(`http://localhost:8080/notable-benefits`, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(newNotableBenefit)
-                // });
-
-                // if(!notableResponse.ok){
-                //     setError("Failed to add notable benefit.");
-                // }
 
                 //Create an array of category objects with their id in the database and input values
                 const categories = [
-                { id: 1, value: newGasPoints },
-                { id: 2, value: newRestaurantPoints },
-                { id: 3, value: newSupermarketPoints },
-                { id: 4, value: newCardDiscountPoints },
-                { id: 5, value: newCardWholesalePoints },
-                { id: 6, value: newCardOnlineShoppingPoints },
-                { id: 7, value: newCardUtilityPoints },
-                { id: 8, value: newCardInternetPoints },
-                { id: 9, value: newCardPhonePoints },
-                { id: 10, value: newCardTravelPoints },
-                { id: 11, value: newCardOtherPoints }
-            ];
+                    { id: 1, value: newGasPoints },
+                    { id: 2, value: newRestaurantPoints },
+                    { id: 3, value: newSupermarketPoints },
+                    { id: 4, value: newCardDiscountPoints },
+                    { id: 5, value: newCardWholesalePoints },
+                    { id: 6, value: newCardOnlineShoppingPoints },
+                    { id: 7, value: newCardUtilityPoints },
+                    { id: 8, value: newCardInternetPoints },
+                    { id: 9, value: newCardPhonePoints },
+                    { id: 10, value: newCardTravelPoints },
+                    { id: 11, value: newCardOtherPoints }
+                ];
 
                 //For each category in our object, create a point earning object to send to the backend
                 for (const cat of categories) {
@@ -226,14 +206,6 @@ function AddCardForm({userId}){
     function handleAddOtherPoints(e){
         setNewCardOtherPoints(e.target.value);
     }
-
-    // function handleAddNotableTitle(e){
-    //     setNewCardNotableBenefitTitle(e.target.value);
-    // }
-
-    // function handleAddNotableBenefitDescription(e){ 
-    //     setNewCardNotableBenefitDescription(e.target.value); 
-    // }
 
     function handleAddNewCardFee(e){
         setNewCardFee(e.target.value);
