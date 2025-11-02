@@ -16,36 +16,29 @@ import EditCard from './components/EditCard.jsx';
 
 function App() {
 
-  //create a cards variable and a setter function to modify cards and pass to components
-  //set the default value of the cards array to our initial card array
-  
-  //const [cards, setCards] = useState(initialCards);
-
-  //create a variable to hold if user is logged in and a setter function to set if user is logged in. 
+  //App level state to track if user is logged in, their first name and userId
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  //create a variable to hold the user's first name and a setter function to set the first name
   const[firstName, setFirstName] = useState("");
-
   const [userId, setUserId] = useState(null);
 
   return (
     <>
-      {/* Route the user to the relevant components when the URL parameter is recognized - check that value of isLogged in before allowing to router to dashboard, otherwise route to the login screen. Use replace to overwrite the history stack so back doesn't take to dashboard.*/}
+      {/* Route the user to the relevant components when the URL parameter is recognized - check that the user isLogged in before allowing to render, 
+      otherwise route to the login screen. Use replace to overwrite the history stack so back doesn't take to dashboard.*/}
       <Router>
           <Header firstName={firstName} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
         <Routes>
           <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}  setUserId={setUserId}/>} />
           <Route path='/dashboard' element={isLoggedIn ? <Dashboard userId={userId} /> : <Navigate to="/" replace />} />
           <Route path='/about' element={<About />} />
-          <Route path='/AddCardForm' element={isLoggedIn ? <AddCardForm userId={userId} /> : <Navigate to="/" replace />} />
-          <Route path='/PointsTable' element={<PointsTable userId={userId}/>} />
-          <Route path='/ExpiringRewards' element={<ExpiringRewards userId={userId}/>} />
-          <Route path='/NotableBenefits' element={<NotableBenefits userId={userId}/>} />
-          <Route path='/FinancialSnapshot' element={<FinancialSnapshot userId={userId}/>} />
-          <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
-          <Route path='/CardManagement' element={isLoggedIn ? <CardManagement userId={userId} /> : <Navigate to="/" replace /> } />
-          <Route path='/editCard/:cardId' element={isLoggedIn ? <EditCard userId={userId} /> : <Navigate to="/" replace /> } />
+          <Route path='/add-card-form' element={isLoggedIn ? <AddCardForm userId={userId} /> : <Navigate to="/" replace />} />
+          <Route path='/points-table' element={isLoggedIn ? <PointsTable userId={userId}/> : <Navigate to="/" replace /> }/>
+          <Route path='/expiring-rewards' element={isLoggedIn ? <ExpiringRewards userId={userId}/> : <Navigate to="/" replace />} />
+          <Route path='/notable-benefits' element={isLoggedIn ? <NotableBenefits userId={userId}/>: <Navigate to="/" replace /> } />
+          <Route path='/financial-snapshot' element={isLoggedIn ? <FinancialSnapshot userId={userId}/> : <Navigate to="/" replace /> } />
+          <Route path='/sign-up' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
+          <Route path='/card-management' element={isLoggedIn ? <CardManagement userId={userId} /> : <Navigate to="/" replace /> } />
+          <Route path='/edit-card/:cardId' element={isLoggedIn ? <EditCard userId={userId} /> : <Navigate to="/" replace /> } />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
           <Footer/>

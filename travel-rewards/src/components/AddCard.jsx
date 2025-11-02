@@ -4,7 +4,7 @@ function AddCard(){
 
     return(
         <>
-            <Link to={'/AddCardForm'}><button>Add Card</button></Link>
+            <Link to={'/add-card-form'}><button>Add Card</button></Link>
         </>
     )
 

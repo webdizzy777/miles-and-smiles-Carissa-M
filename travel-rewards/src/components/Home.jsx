@@ -82,7 +82,7 @@ function Home({setIsLoggedIn, setFirstName, setUserId}) {
                         <button type='submit' className="customButton">Login</button>
                     </form>
                     <p className='center'>
-                       <span className='blackOpaque whiteLink'>- Or <Link className='white' to='/SignUp'> Sign Up </Link> -</span> 
+                       <span className='blackOpaque whiteLink'>- Or <Link className='white' to='/sign-up'> Sign Up </Link> -</span> 
                     </p>
                  </div>
                   <p className='card'>Miles & Smiles is your one-stop destination to track all your travel rewards so you can use them before you lose them! Check out our <Link to='/about'>About Us</Link> page to learn more.</p>

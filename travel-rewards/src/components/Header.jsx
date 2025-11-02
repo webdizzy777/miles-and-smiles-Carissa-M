@@ -8,7 +8,7 @@ function Header({firstName, isLoggedIn, setIsLoggedIn}){
             return(
                 <>
                     <div className='sideBySideThreeCard alignMiddle'><h2 className="center">Welcome, {firstName}!</h2></div>
-                    <div className='sideBySideThreeCard alignBottom'><p className='center'><Link to='/dashboard'>Dashboard</Link> | <Link to='/cardManagement'>Card Management</Link> | <Link to='/about'>About Us</Link> | <Link to='#' onClick={() => setIsLoggedIn(false)} >Log Out</Link></p></div>    
+                    <div className='sideBySideThreeCard alignBottom'><p className='center'><Link to='/dashboard'>Dashboard</Link> | <Link to='/card-management'>Card Management</Link> | <Link to='/about'>About Us</Link> | <Link to='#' onClick={() => setIsLoggedIn(false)} >Log Out</Link></p></div>    
                 </>
             )
         } 

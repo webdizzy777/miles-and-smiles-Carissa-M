@@ -648,7 +648,7 @@ function EditCard({ userId }) {
           </button>
 
           <div className="center">
-            <button type="button" onClick={() => navigate("/cardManagement")}>
+            <button type="button" onClick={() => navigate("/card-management")}>
               Cancel
             </button>
             <button type="submit">Update Card</button>

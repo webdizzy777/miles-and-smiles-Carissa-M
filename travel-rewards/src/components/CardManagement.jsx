@@ -72,7 +72,7 @@ function CardManagement({ userId }) {
       <tr key={c.cardId}>
         <td title={c.cardName}>{c.cardName}</td>
         <td>
-          <Link to={`/editCard/${c.cardId}`}>
+          <Link to={`/edit-card/${c.cardId}`}>
             <span className="material-symbols-outlined">edit_square</span>
           </Link>
         </td>
