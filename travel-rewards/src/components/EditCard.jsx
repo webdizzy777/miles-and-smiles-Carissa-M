@@ -7,7 +7,7 @@ function EditCard({ userId }) {
   const navigate = useNavigate();
 
   // Fields for card data
-  const [cardName, setCardName] = useState("");
+  const [cardName, setCardName] = useState("Card Name");
   const [fee, setFee] = useState(0);
   const [dateOpened, setDateOpened] = useState("");
   const [apr, setApr] = useState(0);
