@@ -15,11 +15,8 @@ function AddCardForm({userId}){
     const [newCardPhonePoints, setNewCardPhonePoints] = useState(0);
     const [newCardTravelPoints, setNewCardTravelPoints] = useState(0);
     const [newCardOtherPoints, setNewCardOtherPoints] = useState(0);
-    const [newCardExpiringRewardTitle, setNewCardExpiringRewardTitle] = useState("");
-    const [newCardRewardExpirationDate, setNewCardRewardExpirationDate] = useState("2025-01-01");
-    const [newCardExpiringRewardDetails, setNewCardExpiringRewardDetails] = useState("");
-    const [newCardNotableBenefitTitle, setNewCardNotableBenefitTitle] = useState("");
-    const [newCardNotableBenefitDescription, setNewCardNotableBenefitDescription] = useState("");
+    // const [newCardNotableBenefitTitle, setNewCardNotableBenefitTitle] = useState("");
+    // const [newCardNotableBenefitDescription, setNewCardNotableBenefitDescription] = useState("");
     const [newCardFee, setNewCardFee] = useState(0);
     const [newDateOpened, setNewDateOpened] = useState("2025-01-01");
     const [newApr, setNewApr] = useState(0.00);
@@ -27,7 +24,17 @@ function AddCardForm({userId}){
     const [newCardBalance, setNewCardBalance] = useState(0);
     const [newCardDueDate, setNewCardDueDate] = useState("");
     const [error, setError] = useState(null);
- 
+
+    //set default value to an array of objects to handle multiple rewards and benefits
+    const [expiringRewards, setExpiringRewards] = useState([
+        { title: "", details: "", expirationDate: "2025-01-01" }
+    ]);
+
+    const [notableBenefits, setNotableBenefits] = useState([
+        { title: "", description: "" }
+    ]);
+
+    //use useNavigate instead of Link to navigate after successful API calls
     const navigate = useNavigate();
 
     async function handleAddCard(e){
@@ -62,43 +69,64 @@ function AddCardForm({userId}){
                 const savedCard = await cardResponse.json();
                 const cardId = savedCard.cardId;
 
-                //create the expiring reward object
-                const newExpiringReward = {
-                    cardId: cardId,
-                    title: newCardExpiringRewardTitle,
-                    details: newCardExpiringRewardDetails,
-                    expirationDate: newCardRewardExpirationDate
-                };
+                //For each expiring reward, create an expiring reward object to send to the backend and then post it
+                for (const reward of expiringRewards) {
+                    const newExpiringReward = {
+                        cardId: cardId,
+                        title: reward.title,
+                        details: reward.details,
+                        expirationDate: reward.expirationDate
+                    };
 
-                //Post the new expiring reward to the backend
-                const rewardResponse = await fetch(`http://localhost:8080/expiring-rewards`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newExpiringReward)
-                });
+                    const rewardResponse = await fetch(`http://localhost:8080/expiring-rewards`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newExpiringReward)
+                    });
 
-                if(!rewardResponse.ok){
-                    setError("Failed to add expiring reward.")
+                    if (!rewardResponse.ok) {
+                        setError("Failed to add an expiring reward.");
+                    }
                 }
 
-                //create the notable benefit object
-                const newNotableBenefit = {
-                    title: newCardNotableBenefitTitle,        
-                    description: newCardNotableBenefitDescription,  
-                    cardId: cardId,
-                    cardName: newCardName 
-                }
-                
-                //Post the new notable benefit to the backend  
-                const notableResponse = await fetch(`http://localhost:8080/notable-benefits`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newNotableBenefit)
-                });
+                //For each notable benefit, create a notable benefit object to send to the backend and then post it
+                for (const benefit of notableBenefits) {
+                    const newNotableBenefit = {
+                        title: benefit.title,        
+                        description: benefit.description,  
+                        cardId: cardId,
+                        cardName: newCardName
+                    }
 
-                if(!notableResponse.ok){
+                    const notableResponse = await fetch(`http://localhost:8080/notable-benefits`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(newNotableBenefit)
+                    });
+
+                    if(!notableResponse.ok){
                     setError("Failed to add notable benefit.");
                 }
+
+                }
+                //create the notable benefit object
+                // const newNotableBenefit = {
+                //     title: newCardNotableBenefitTitle,        
+                //     description: newCardNotableBenefitDescription,  
+                //     cardId: cardId,
+                //     cardName: newCardName 
+                // }
+                
+                //Post the new notable benefit to the backend  
+                // const notableResponse = await fetch(`http://localhost:8080/notable-benefits`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(newNotableBenefit)
+                // });
+
+                // if(!notableResponse.ok){
+                //     setError("Failed to add notable benefit.");
+                // }
 
                 //Create an array of category objects with their id in the database and input values
                 const categories = [
@@ -199,25 +227,13 @@ function AddCardForm({userId}){
         setNewCardOtherPoints(e.target.value);
     }
 
-    function handleAddExpiringRewardTitle(e){
-        setNewCardExpiringRewardTitle(e.target.value);
-    }
+    // function handleAddNotableTitle(e){
+    //     setNewCardNotableBenefitTitle(e.target.value);
+    // }
 
-    function handleAddNewCardRewardExpirationDate(e){
-        setNewCardRewardExpirationDate(e.target.value);
-    }
-
-    function handleAddNewCardExpiringRewardDetails(e){
-        setNewCardExpiringRewardDetails(e.target.value);
-    }
-
-    function handleAddNotableTitle(e){
-        setNewCardNotableBenefitTitle(e.target.value);
-    }
-
-    function handleAddNotableBenefitDescription(e){ 
-        setNewCardNotableBenefitDescription(e.target.value); 
-    }
+    // function handleAddNotableBenefitDescription(e){ 
+    //     setNewCardNotableBenefitDescription(e.target.value); 
+    // }
 
     function handleAddNewCardFee(e){
         setNewCardFee(e.target.value);
@@ -241,6 +257,46 @@ function AddCardForm({userId}){
 
     function handleAddNewCardDueDate(e){
         setNewCardDueDate(e.target.value);
+    }
+
+    //Copy the expiringRewards array, update the field:value at the given index, and save it to state
+    function handleRewardChange(index, field, value) {
+        const newRewards = [...expiringRewards];
+        newRewards[index][field] = value;
+        setExpiringRewards(newRewards);
+    }
+
+    // Copy the notableBenefits array, update the field:value at the given index, and save it to state
+    function handleBenefitChange(index, field, value) {
+        const newBenefits = [...notableBenefits];
+        newBenefits[index][field] = value;
+        setNotableBenefits(newBenefits);
+    }
+
+    // Create a new array of expiring rewards by spreading the current ones and adding an empty reward object to the end.
+    function handleAddRewardLine() {
+    setExpiringRewards([
+        ...expiringRewards,
+        { title: "", details: "", expirationDate: "2025-01-01" }
+    ]);
+    }
+
+    //Function to add a new notable benefit line by copying the current array and adding an empty benefit object
+    function handleAddBenefitLine() {
+        setNotableBenefits([
+            ...notableBenefits,
+            { title: "", description: "" }
+        ]);
+    }
+
+    // Function to remove an expiring reward line by filtering out the reward at the given index
+    function handleRemoveRewardLine(index) {
+        setExpiringRewards((currentRewards) => currentRewards.filter((_ignoredReward_, i) => i !== index));
+    }
+
+    // Function to remove a notable benefit line by filtering out the benefit at the given index
+    function handleRemoveBenefitLine(index) {
+        setNotableBenefits((currentBenefits) => currentBenefits.filter((_ignoredBenefit_, i) => i !== index));
     }
 
     return(
@@ -346,74 +402,104 @@ function AddCardForm({userId}){
                     </div>
 
                     <h3>Expiring Rewards</h3>
-                    <div className="containerNoGap">
-                        <div className="sideBySideCardMinPadding">
-                            <label htmlFor="expTitle"><b>Title</b><br />
-                                <input 
-                                    type="text" 
-                                    className="addCardInput" 
-                                    id="expTitle" 
-                                    value={newCardExpiringRewardTitle} 
-                                    onChange={handleAddExpiringRewardTitle} 
-                                />
-                            </label>
-                        </div>
 
+                    {expiringRewards.map((reward, index) => (
+                    //Map through our state array to create input fields for each reward, passing the index for unique ids
+                    <div key={index} className="containerNoGap">
                         <div className="sideBySideCardMinPadding">
-                            <label htmlFor="expDate"><b>Use By Date</b><br />
-                                <input 
-                                    type="date" 
-                                    className="addCardInput" 
-                                    id="expDate" 
-                                    value={newCardRewardExpirationDate} 
-                                    onChange={handleAddNewCardRewardExpirationDate} 
-                                />
-                            </label>
+                        <label htmlFor={`expTitle-${index}`}><b>Title</b><br />
+                            <input
+                            type="text"
+                            className="addCardInput"
+                            id={`expTitle-${index}`}
+                            value={reward.title}
+                            //Passing index, field name, and value to the handler function
+                            onChange={(e) => handleRewardChange(index, "title", e.target.value)}
+                            />
+                        </label>
                         </div>
-
                         <div className="sideBySideCardMinPadding">
-                            <label htmlFor="expDetails"><b>Details</b><br />
-                                <input 
-                                    type="text" 
-                                    className="addCardInput" 
-                                    id="expDetails" 
-                                    value={newCardExpiringRewardDetails} 
-                                    onChange={handleAddNewCardExpiringRewardDetails} 
-                                />
-                            </label>
+                        <label htmlFor={`expDate-${index}`}><b>Use By Date</b><br />
+                            <input
+                            type="date"
+                            className="addCardInput"
+                            id={`expDate-${index}`}
+                            value={reward.expirationDate}
+                            onChange={(e) => handleRewardChange(index, "expirationDate", e.target.value)}
+                            />
+                        </label>
+                        </div>
+                        <div className="sideBySideCardMinPadding">
+                        <label htmlFor={`expDetails-${index}`}><b>Details</b><br />
+                            <input
+                            type="text"
+                            className="addCardInput"
+                            id={`expDetails-${index}`}
+                            value={reward.details}
+                            onChange={(e) => handleRewardChange(index, "details", e.target.value)}
+                            />
+                        </label>
+                        </div>
+                        {/* Icon to remove reward line */}
+                        <div className="alignMiddle">
+                            <b><span className="material-symbols-outlined close" title="Remove line" onClick={() => handleRemoveRewardLine(index)}>
+                            close
+                            </span></b>
                         </div>
                     </div>
+                    ))}
+                    {/* Button to add line */}
+                    <button type="button" onClick={handleAddRewardLine} >
+                    + Add Reward
+                    </button>
 
                     <h3>Notable Benefit</h3>
-                    <div className="containerNoGap">
+                    {notableBenefits.map((benefit, index) => (
+                    //Map through our state array to create input fields for each benefit, passing the index for unique ids
+                    <div key={index} className="containerNoGap">
                         <div className="sideBySideCardMinPadding">
-                            <label htmlFor="notableTitle"><b>Title for Notable Benefit</b><br />
+                            <label htmlFor={`ntblTitle-${index}`}><b>Title for Notable Benefit</b><br />
                                 <input 
                                     type="text" 
                                     className="addCardInput" 
-                                    id="notableTitle" 
-                                    value={newCardNotableBenefitTitle} 
-                                    onChange={handleAddNotableTitle} 
+                                    id={`ntblTitle-${index}`}
+                                    value={benefit.title} 
+                                    //Passing index, field name, and value to the handler function
+                                    onChange={(e) => handleBenefitChange(index, "title", e.target.value)} 
                                 />
                             </label>
                         </div>
                         <div className="sideBySideCardMinPadding">
-                            <label htmlFor="notable"><b>Notable Benefit Description</b><br />
+                            <label htmlFor={`ntblDescription-${index}`}><b>Notable Benefit Description</b><br />
                                 <input 
                                     type="text" 
                                     className="addCardInput" 
-                                    id="notable" 
-                                    value={newCardNotableBenefitDescription} 
-                                    onChange={handleAddNotableBenefitDescription} 
+                                    id={`ntblDescription-${index}`}
+                                    value={benefit.description} 
+                                    onChange={(e) => handleBenefitChange(index,"description", e.target.value)}
                                 />
                             </label>
+                        </div>
+                        {/* Icon to remove benefit line */}
+                        <div className="alignMiddle">
+                            <b><span className="material-symbols-outlined close" title="Remove line" onClick={() => handleRemoveBenefitLine(index)}>
+                            close
+                            </span></b>
                         </div>
                     </div>
+                    ))}
+                    {/* Button to add line */}
+                    <button type="button" onClick={handleAddBenefitLine} >
+                    + Add Benefit
+                    </button>
 
                     {error && <p>{error}</p>}
 
                     <br /><br />
-                    <button onClick={handleAddCard}>Add Card</button>
+                    <div className="center">
+                        <button onClick={() => navigate("/dashboard")}>Cancel</button>&nbsp;&nbsp;
+                        <button onClick={handleAddCard}>Add Card</button>
+                    </div>
 
                     </form>
                 </div>
