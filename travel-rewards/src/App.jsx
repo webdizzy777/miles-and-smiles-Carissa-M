@@ -38,7 +38,7 @@ function App() {
           <Route path='/' element={<Home setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName}  setUserId={setUserId}/>} />
           <Route path='/dashboard' element={isLoggedIn ? <Dashboard userId={userId} /> : <Navigate to="/" replace />} />
           <Route path='/about' element={<About />} />
-          <Route path='/AddCardForm' element={<AddCardForm userId={userId} />} />
+          <Route path='/AddCardForm' element={isLoggedIn ? <AddCardForm userId={userId} /> : <Navigate to="/" replace />} />
           <Route path='/PointsTable' element={<PointsTable userId={userId}/>} />
           <Route path='/ExpiringRewards' element={<ExpiringRewards userId={userId}/>} />
           <Route path='/NotableBenefits' element={<NotableBenefits userId={userId}/>} />
@@ -46,6 +46,7 @@ function App() {
           <Route path='/SignUp' element={<SignUp setIsLoggedIn={setIsLoggedIn} setFirstName={setFirstName} setUserId={setUserId} firstName={firstName}/>} />
           <Route path='/CardManagement' element={isLoggedIn ? <CardManagement userId={userId} /> : <Navigate to="/" replace /> } />
           <Route path='/editCard/:cardId' element={isLoggedIn ? <EditCard userId={userId} /> : <Navigate to="/" replace /> } />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
           <Footer/>
       </Router>
