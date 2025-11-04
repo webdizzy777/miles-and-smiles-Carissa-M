@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback} from "react";
-import { formatDate } from "./Functions.jsx";
+import { formatDate, getTimeRemaining} from "./Functions.jsx";
 
 function ExpiringRewards({userId}){
 
@@ -43,7 +43,11 @@ function ExpiringRewards({userId}){
     
     //when the used icon is pressed remove the benefit 
     async function handleRemoveBenefit(id){
-        
+        //confirm the user wants to delete the reward and proceed if they do
+        const confirmDelete = window.confirm(
+        "Are you sure you want to delete this reward?"
+        );
+        if (!confirmDelete) return;
         try{
             const response = await fetch(`http://localhost:8080/expiring-rewards/${id}`, {
                 method: 'DELETE',
@@ -63,6 +67,11 @@ function ExpiringRewards({userId}){
 
     //Create a variable to hold the list of expiring rewards
     const cardExpiringRewards = rewardData
+    //filter out any cards where the reward title or detail is an empty string
+    .filter(reward =>
+        (reward.title && reward.title.trim() !== "") ||
+        (reward.details && reward.details.trim() !== "")
+    )
     //sort by expiration date soonest to latest
     .sort((a,b) => new Date(a.expirationDate) - new Date(b.expirationDate))
     //map through the cards to make a list item with the relevant information
@@ -70,13 +79,17 @@ function ExpiringRewards({userId}){
         return(
             <li className="benefit-li" key={card.rewardId}>
                 <b>{card.cardName}: </b>
-                {card.title}:&nbsp;
-                <i>{card.details}</i>
-                <b> Use by: &nbsp;
-                <span className="green">{formatDate(card.expirationDate)}</span></b> &nbsp;
-                <span className="material-symbols-outlined used" onClick={() => handleRemoveBenefit(card.rewardId)}>
-                    check_circle
-                </span>
+                <ul>
+                    <li>
+                        <i><b><span className="green">{card.title}:</span></b></i>&nbsp;
+                        {card.details}
+                        <b> Use by: &nbsp;
+                        <span className={getTimeRemaining(card.expirationDate)}>{formatDate(card.expirationDate)}</span></b> &nbsp;
+                        <span className="material-symbols-outlined used" onClick={() => handleRemoveBenefit(card.rewardId)}>
+                            check_circle
+                        </span>
+                    </li>
+                </ul>
             </li>
         );
     });
@@ -88,15 +101,18 @@ function ExpiringRewards({userId}){
             {/* Display error message or no reward found at top of card */}
             {error && <p className="center red">Error: {error}</p>}
             {!error && rewardData.length === 0 &&(
-                <p className="center">No expiring rewards found</p>
+                <p className="center">No expiring rewards found.</p>
             )}
 
             {/* Only show the list if there are rewards */}
             {rewardData.length > 0 && (
-                <ul>
-                    {/* Populate the list items */}
-                    {cardExpiringRewards}
-                </ul>
+                <>
+                    <p><i>Mark the reward as used by clicking the check icon to remove it from the list.</i></p>
+                    <ul>
+                        {/* Populate the list items */}
+                        {cardExpiringRewards}
+                    </ul>
+                </>
             )}
 
         </div>

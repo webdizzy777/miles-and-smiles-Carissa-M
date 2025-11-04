@@ -35,3 +35,23 @@ export function formatDueDate(dueDate){
         return "-";
     }
 }
+
+
+//function to calculate if the date is within 30, 90 days, or past due
+export function getTimeRemaining(date) {
+  const today = new Date();
+  const expiringDate = new Date(date);
+
+  // Calculate difference in days, getTime is in milliseconds, round up, (seconds * minutes * hours * 24 hours)
+  const diffInTime = expiringDate.getTime() - today.getTime();
+  const diffInDays = Math.ceil(diffInTime / (1000 * 60 * 60 * 24));
+
+  // Return css class name
+  if (diffInDays < 0 || diffInDays <= 30) {
+    return 'red';
+  } else if (diffInDays <= 90) {
+    return 'orange';
+  } else {
+    return 'green';
+  }
+}
