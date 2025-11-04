@@ -25,7 +25,7 @@ function Home({setIsLoggedIn, setFirstName, setUserId}) {
                 body: JSON.stringify({ email, password })
             });
 
-            //Convert the response to JSON
+            //Convert the response to a JS object
             const data = await response.json();
 
             //Wait for the response from the server

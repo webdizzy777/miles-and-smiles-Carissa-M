@@ -63,7 +63,7 @@ function AddCardForm({userId}){
             });
 
             if(cardResponse.ok){
-                //Convert the response to JSON to get the cardId
+                //Convert the response to a JS object and get the cardId
                 const savedCard = await cardResponse.json();
                 const cardId = savedCard.cardId;
 

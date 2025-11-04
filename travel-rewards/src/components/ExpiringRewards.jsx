@@ -19,7 +19,7 @@ function ExpiringRewards({userId}){
             });
 
             if (response.ok){
-                //convert response to JSON
+                //convert response to a JS object
                 const data = await response.json();
                 setRewardData(data);
                 setError(null);

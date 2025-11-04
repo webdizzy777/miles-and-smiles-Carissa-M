@@ -15,7 +15,7 @@ function NotableBenefits({userId}){
                     headers: { 'Content-Type': 'application/json' }
                 });
                 if (response.ok) {
-                    // Convert the response to JSON
+                    // Convert the response to a JS object
                     const data = await response.json();
                     setBenefitData(data);
                 } else {
@@ -37,6 +37,13 @@ function NotableBenefits({userId}){
     }, [userId]);
 
     const cardNotableBenefits = benefitData
+    //filter out any cards where the benefit title or description is an empty string
+    .filter(benefit =>
+        (benefit.title && benefit.title.trim() !== "") ||
+        (benefit.description && benefit.description.trim() !== "")
+    )
+    //sort alphabetically by card name 
+    .sort((a, b) => a.cardName.localeCompare(b.cardName))
     .map((card)=>(
         <li className="benefit-li" key={card.benefitId}>
             <b>{card.cardName}:</b>

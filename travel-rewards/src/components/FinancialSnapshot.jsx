@@ -15,7 +15,7 @@ function FinancialSnapshot({userId}){
                     headers: { 'Content-Type': 'application/json' }
                 });
                 if (response.ok) {
-                    // Convert the response to JSON and clear any previous errors
+                    // Convert the response to a JS object and clear any previous errors
                     const data = await response.json();
                     setFinancialData(data);
                     setError(null); 
