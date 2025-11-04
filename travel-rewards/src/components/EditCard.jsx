@@ -29,8 +29,10 @@ function EditCard({ userId }) {
   const [otherPoints, setOtherPoints] = useState(0);
 
   // Arrays for rewards and benefits
+  const today = new Date();
+  const formattedToday = today.toISOString().split("T")[0];
   const [expiringRewards, setExpiringRewards] = useState([
-    { title: "", details: "", expirationDate: "2025-01-01" },
+    { title: "", details: "", expirationDate: formattedToday },
   ]);
 
   const [notableBenefits, setNotableBenefits] = useState([

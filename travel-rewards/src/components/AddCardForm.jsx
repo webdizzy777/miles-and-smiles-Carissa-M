@@ -16,7 +16,9 @@ function AddCardForm({userId}){
     const [newCardTravelPoints, setNewCardTravelPoints] = useState(0);
     const [newCardOtherPoints, setNewCardOtherPoints] = useState(0);
     const [newCardFee, setNewCardFee] = useState(0);
-    const [newDateOpened, setNewDateOpened] = useState("2025-01-01");
+    const today = new Date();
+    const formattedToday = today.toISOString().split("T")[0];
+    const [newDateOpened, setNewDateOpened] = useState(formattedToday);
     const [newApr, setNewApr] = useState(0.00);
     const [newLoc, setNewLoc] = useState(0);
     const [newCardBalance, setNewCardBalance] = useState(0);

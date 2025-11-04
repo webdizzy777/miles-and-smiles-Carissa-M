@@ -23,8 +23,7 @@ function PointsTable({ userId }) {
         }
       } catch (err) {
         // Display an error message if there is a network or other error
-        console.error('Fetch error:', err);
-        setError('An error occurred while fetching points');
+        setError('An error occurred while fetching points: ' + err.message);
       }
     }
     
@@ -81,7 +80,7 @@ function PointsTable({ userId }) {
                 <th>Category</th>
                 {cards.map(card => (
                   // Display each card name as column header
-                  <th key={card}>{card}</th> 
+                  <th title={card} key={card}>{card}</th> 
                 ))}
               </tr>
             </thead>
@@ -89,7 +88,7 @@ function PointsTable({ userId }) {
               {categories.map(category => (
                 //for each table row, set the header to the category name
                 <tr key={category}>
-                  <th>{category}</th>
+                  <th title={category}>{category}</th>
                   {cards.map(card => {
                     //and if the category exist for this card, set the value to the card's multiplier
                     const value = tableData[category]?.[card];

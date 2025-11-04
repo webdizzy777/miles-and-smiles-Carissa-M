@@ -24,8 +24,7 @@ function NotableBenefits({userId}){
                 }
             } catch (err) {
                 // Display an error message if there is a network or other error
-                console.error('Fetch error:', err.message);
-                setError('An error occurred while fetching notable benefits');
+                setError('An error occurred while fetching notable benefits: ' + err.message);
             }   
         }   
         if (userId) {
