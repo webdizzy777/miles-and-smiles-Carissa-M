@@ -20,7 +20,6 @@ function NotableBenefits({userId}){
                     setBenefitData(data);
                 } else {
                     // Display an error message if the fetch fails
-                    console.log('Error fetching notable benefits data');
                     setError('Failed to fetch notable benefits');
                 }
             } catch (err) {
@@ -54,7 +53,7 @@ function NotableBenefits({userId}){
             <h2>Notable Benefits</h2>
             
             {/*Display error message if a reward isn't found */}
-            {error && <p className="error-message">{error}</p>}
+            {error && <p>{error}</p>}
             {benefitData.length === 0 && !error && (
                 <p className="center">No notable benefits found.</p>
             )}

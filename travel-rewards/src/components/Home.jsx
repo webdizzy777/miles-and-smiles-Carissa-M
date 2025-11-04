@@ -44,8 +44,7 @@ function Home({setIsLoggedIn, setFirstName, setUserId}) {
             }
 
         } catch (error) {
-            console.log("Error fetching user data:", error);
-            setErrorMsg("Network error. Please try again later.");
+            setErrorMsg("Network error. Please try again later. Message: " + error.message);
             setDisplayError(true);
         }
     }

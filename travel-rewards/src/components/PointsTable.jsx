@@ -19,7 +19,6 @@ function PointsTable({ userId }) {
           setEarningData(data);
         } else {
           // Display an error message if the fetch fails
-          console.log('Error fetching points data');
           setError('Failed to fetch points');
         }
       } catch (err) {

@@ -99,7 +99,7 @@ function CardManagement({ userId }) {
             <h2>Card Management</h2>
             <div className="tableContainer">
               {/*Display error message if card data isn't found */}
-              {error && <p className="error-message">{error}</p>}
+              {error && <p>{error}</p>}
               {cardData.length === 0 && !error && (
                 <p className="center">
                   No card data found. <AddCard></AddCard>

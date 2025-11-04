@@ -57,9 +57,8 @@ function SignUp({setIsLoggedIn, setFirstName, setUserId, firstName}){
             }
 
         } catch (error) {
-            console.log('Error registering user:', error);
             //handle any network or fetch errors
-            setErrorMsg('Network error. Please try again later.');
+            setErrorMsg('Network error. Please try again later. Message: ' + error.message);
             setDisplayError(true);
         }
     }

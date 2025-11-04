@@ -75,7 +75,7 @@ function FinancialSnapshot({userId}){
                 <div className="tableContainer">
 
                     {/*Display error message if financial data isn't found */} 
-                    {error && <p className="error-message">{error}</p>}
+                    {error && <p>{error}</p>}
                     {financialData.length === 0 && !error && (
                         <p className="center" >No financial data found.</p>
                     )}
