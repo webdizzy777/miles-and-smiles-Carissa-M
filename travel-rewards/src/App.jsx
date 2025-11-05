@@ -16,7 +16,7 @@ import EditCard from './components/EditCard.jsx';
 
 function App() {
 
-  //App level state to track if user is logged in, their first name and userId
+  //App level state to track if user is logged in, their first name and userId.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const[firstName, setFirstName] = useState("");
   const [userId, setUserId] = useState(null);
