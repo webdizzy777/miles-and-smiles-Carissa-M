@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AddCard from "./AddCard.jsx";
+import Modal from "./Modal.jsx";
 import { Link } from "react-router-dom";
+import DeleteButton from "./DeleteButton.jsx";
 
 function CardManagement({ userId }) {
   const [cardData, setCardData] = useState([]);
   const [error, setError] = useState(null);
 
-  //useCallback in order to prevent infinite loop in useEffect when fetchCards is a dependency because it is re-created on every render
+  //useCallback will only recreate the function if userId changes
   const fetchCards = useCallback(async () => {
     try {
       // Fetch card data from the backend
@@ -17,6 +19,7 @@ function CardManagement({ userId }) {
           headers: { "Content-Type": "application/json" },
         }
       );
+
       if (response.ok) {
         // Convert the response to a JS object and clear any previous errors
         const data = await response.json();
@@ -32,7 +35,7 @@ function CardManagement({ userId }) {
     }
   }, [userId]);
 
-  // Fetch cards when component mounts or userId changes
+  // Clear previous data and fetch cards when component mounts or userId changes
   useEffect(() => {
     if (userId) {
       setCardData([]);
@@ -40,33 +43,6 @@ function CardManagement({ userId }) {
     }
   }, [userId, fetchCards]);
 
-  async function handleDeleteCard(cardId) {
-    // Confirm the user wants to delete the card and proceed if they do
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this card?"
-    );
-    if (!confirmDelete) return;
-    try {
-      // Send DELETE request to backend to delete the card
-      const deleteResponse = await fetch(
-        `http://localhost:8080/cards/${cardId}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (deleteResponse.ok) {
-        // Refresh the card list after successful deletion
-        fetchCards();
-      } else {
-        setError("Error deleting card");
-      }
-    } catch (err) {
-      setError("Error deleting card: " + err.message);
-    }
-  }
-  //For each card, create a table row with edit and delete options with unique key and names
   const cardRow = cardData.map((c) => {
     return (
       <tr key={c.cardId}>
@@ -77,12 +53,16 @@ function CardManagement({ userId }) {
           </Link>
         </td>
         <td>
-          <span
-            className="material-symbols-outlined close"
-            onClick={() => handleDeleteCard(c.cardId)}
+          <DeleteButton
+            itemId={c.cardId}
+            deleteUrl="http://localhost:8080/cards"
+            //as the parent, tell child deleteButton to refresh the card list after deletion
+            onDelete={fetchCards}
           >
-            delete
-          </span>
+            <span className="material-symbols-outlined close" title="Delete">
+              delete
+            </span>
+          </DeleteButton>
         </td>
       </tr>
     );
