@@ -18,7 +18,7 @@ function Header({firstName, isLoggedIn, setIsLoggedIn}){
         <>
             <header>
                 <div className='container'>
-                    <div className='sideBySideThreeCard'><img src={Logo} alt="Travel Logo" />
+                    <div className='sideBySideThreeCard'><Link to='/dashboard'><img src={Logo} alt="Travel Logo" /></Link>
                     <h1>Miles & Smiles</h1></div>
                     {displayLoggedInDetails()}
                 </div>

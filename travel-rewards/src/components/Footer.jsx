@@ -24,6 +24,7 @@ function Footer(){
                     </p>
                 </address>
                 <p className="center"><Link to='/dashboard'>Dashboard</Link> | <Link to='/about'>About Us</Link></p>
+                <p className="center">© {new Date().getFullYear()} Miles & Smiles Rewards Tracker. This is a student project not affiliated with any airline or company.</p>
             </footer>
         </>
     );
