@@ -8,7 +8,7 @@ function CardManagement({ userId }) {
   const [cardData, setCardData] = useState([]);
   const [error, setError] = useState(null);
 
-  //useCallback will only recreate the function if userId changes
+  //useCallback will only recreate the function if userId changes, important because useEffect depends on it and prevents infinite loops with fetchCards inside useEffect
   const fetchCards = useCallback(async () => {
     try {
       // Fetch card data from the backend
