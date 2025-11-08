@@ -325,7 +325,7 @@ table {
 /*On screens that are smaller than 576 px make my side by  side cards stack vertically by making them take up the full width of the container by starting at 100% width and allowed to grow to fill and shrink to avoid overflow*/
 @media (max-width: 768px) {
   .sideBySideCard,
-  .sideBySideFooter
+  .sideBySideFooter,
   .sideBySideThreeCard {
     flex: 1 1 100%;
   }
