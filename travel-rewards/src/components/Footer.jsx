@@ -10,7 +10,7 @@ function Footer(){
                         <span className="material-symbols-outlined purple">
                             phone_in_talk
                         </span> &nbsp;
-                        <a href="tel:+3143212222">(314) 321-2222</a>
+                        <a href="tel:+3145555555">(314) 555-5555</a>
                         &nbsp; |
                         &nbsp;<span className="material-symbols-outlined purple">
                             map
@@ -20,7 +20,7 @@ function Footer(){
                         &nbsp;<span className="material-symbols-outlined purple">
                             alternate_email
                         </span>&nbsp;
-                        <a href="mailto:admin@milesandsmiles.com">admin@milesandsmiles.com</a>
+                        <a href="mailto:support@example.com">support@example.com</a>
                     </p>
                 </address>
                 <p className="center"><Link to='/dashboard'>Dashboard</Link> | <Link to='/about'>About Us</Link></p>
