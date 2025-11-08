@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 function AddCardForm({userId}){
 
-    const [newCardName, setNewCardName] = useState("Card Name");
+    const [newCardName, setNewCardName] = useState("Default Card Name");
     const [newGasPoints, setNewGasPoints] = useState(0);
     const [newRestaurantPoints, setNewRestaurantPoints] = useState(0);
     const [newSupermarketPoints, setNewSupermarketPoints] = useState(0);
@@ -27,7 +27,7 @@ function AddCardForm({userId}){
 
     //set default value to an array of objects to handle multiple rewards and benefits
     const [expiringRewards, setExpiringRewards] = useState([
-        { title: "", details: "", expirationDate: "2025-01-01" }
+        { title: "", details: "", expirationDate: formattedToday}
     ]);
 
     const [notableBenefits, setNotableBenefits] = useState([

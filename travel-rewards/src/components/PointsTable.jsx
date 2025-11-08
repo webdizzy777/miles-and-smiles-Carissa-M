@@ -100,7 +100,7 @@ function PointsTable({ userId }) {
                           ? isMax
                             ? <span className="green"><b>{value}</b></span>
                             : value
-                          : '-'}
+                          : '0'}
                       </td>
                     );
                   })}
