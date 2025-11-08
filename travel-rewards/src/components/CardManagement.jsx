@@ -58,6 +58,7 @@ function CardManagement({ userId }) {
             deleteUrl="http://localhost:8080/cards"
             //as the parent, tell child deleteButton to refresh the card list after deletion
             onDelete={fetchCards}
+            itemName="card"
           >
             <span className="material-symbols-outlined close" title="Delete">
               delete

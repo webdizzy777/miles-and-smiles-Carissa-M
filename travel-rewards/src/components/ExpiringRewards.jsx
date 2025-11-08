@@ -84,6 +84,7 @@ function ExpiringRewards({ userId }) {
                 deleteUrl="http://localhost:8080/expiring-rewards"
                 //as the parent, tell child deleteButton to refresh the card list after deletion
                 onDelete={fetchRewards}
+                itemName="benefit"
               >
                 <span className="material-symbols-outlined used">
                   check_circle

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from "./Modal.jsx";
 
-function DeleteButton({ itemId, deleteUrl, onDelete, children }) {
+function DeleteButton({ itemId, deleteUrl, onDelete, children, itemName = "item"}) {
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState(null);
 
@@ -36,7 +36,7 @@ function DeleteButton({ itemId, deleteUrl, onDelete, children }) {
 
         {showModal && (
             <Modal onClose={() => setShowModal(false)}>
-                Are you sure you want to delete this card?
+                Are you sure you want to delete this {itemName}?
                 {error && <p className="red">{error}</p>}
                 <div className="modalButtons">
                     <button onClick={handleConfirmDelete}>Confirm</button>
